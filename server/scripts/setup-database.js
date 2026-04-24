@@ -10,9 +10,10 @@ async function setupDatabase() {
     // Create connection
     connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 3000,
+      port: process.env.DB_PORT || 3306,
       user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD || 'Mub$rik9419'
+      password: process.env.DB_PASSWORD || 'Mub$rik9419',
+      ssl: process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : false
     });
 
     console.log('Connected to MySQL server');
@@ -37,6 +38,9 @@ async function setupDatabase() {
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
         role ENUM('admin', 'doctor', 'patient', 'receptionist') NOT NULL,
+        status ENUM('active', 'inactive', 'pending') DEFAULT 'active',
+        invitation_token VARCHAR(255),
+        invitation_expires DATETIME,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )
