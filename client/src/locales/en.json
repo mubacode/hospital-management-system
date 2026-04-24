@@ -7,6 +7,7 @@
     "patients": "Patients",
     "reception": "Reception",
     "medicalRecords": "Medical Records",
+    "doctors": "Doctors",
     "profile": "Profile",
     "security": "Security",
     "signOut": "Sign Out",
@@ -73,7 +74,13 @@
     "language": "Language",
     "comingSoon": "Coming soon...",
     "viewAll": "View All",
-    "updateRecord": "Update Record"
+    "updateRecord": "Update Record",
+    "roles": {
+      "admin": "Admin",
+      "doctor": "Doctor",
+      "patient": "Patient",
+      "receptionist": "Receptionist"
+    }
   },
   "auth": {
     "login": "Login",

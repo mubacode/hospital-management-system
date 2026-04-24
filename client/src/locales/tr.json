@@ -7,6 +7,7 @@
     "patients": "Hastalar",
     "reception": "Resepsiyon",
     "medicalRecords": "Tıbbi Kayıtlar",
+    "doctors": "Doktorlar",
     "profile": "Profil",
     "security": "Güvenlik",
     "signOut": "Çıkış Yap",
@@ -73,7 +74,13 @@
     "language": "Dil",
     "comingSoon": "Yakında...",
     "viewAll": "Tümünü Gör",
-    "updateRecord": "Kaydı Güncelle"
+    "updateRecord": "Kaydı Güncelle",
+    "roles": {
+      "admin": "Yönetici",
+      "doctor": "Doktor",
+      "patient": "Hasta",
+      "receptionist": "Resepsiyonist"
+    }
   },
   "auth": {
     "login": "Giriş Yap",
