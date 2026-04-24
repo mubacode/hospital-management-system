@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Badge, Modal, Alert, Spinner, Card } from 'react-bootstrap';
+import { Button, Badge, Modal, Alert, Spinner, Card, Col } from 'react-bootstrap';
 import { FaHistory, FaFileMedical, FaPrescription, FaUserMd, FaSync } from 'react-icons/fa';
 import DataTable from '../../components/common/DataTable';
 import { appointmentService } from '../../services/api';

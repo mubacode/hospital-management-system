@@ -4,6 +4,7 @@ import { FaTrash, FaEdit, FaPlus, FaClinicMedical, FaProjectDiagram } from 'reac
 import DataTable from '../../components/common/DataTable';
 import { clinicService } from '../../services/api';
 import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import notify from '../../utils/notify';
 
 const ClinicManagement = () => {
