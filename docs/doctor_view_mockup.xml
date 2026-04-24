@@ -1,0 +1,205 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0" version="22.1.16">
+  <diagram name="Doctor View" id="doctor-view-mockup">
+    <mxGraphModel dx="1400" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Page Container -->
+        <mxCell id="container" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="700" height="600" as="geometry" />
+        </mxCell>
+        
+        <!-- Header -->
+        <mxCell id="header" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="700" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Logo -->
+        <mxCell id="logo" value="Hospital Logo" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="100" y="95" width="120" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- User Info -->
+        <mxCell id="user_info" value="Doctor Name ▾" style="text;html=1;strokeColor=none;fillColor=none;align=right;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="600" y="95" width="160" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Navigation Menu -->
+        <mxCell id="nav_menu" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="80" y="140" width="180" height="540" as="geometry" />
+        </mxCell>
+        
+        <!-- Nav Items -->
+        <mxCell id="nav_dashboard" value="Dashboard" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="160" width="180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nav_appointments" value="My Appointments" style="rounded=1;whiteSpace=wrap;html=1;align=left;spacingLeft=10;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="90" y="200" width="160" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nav_schedule" value="Manage Schedule" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="250" width="180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nav_patients" value="Patient Records" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="290" width="180" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="nav_profile" value="My Profile" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="80" y="330" width="180" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Main Content Area -->
+        <mxCell id="content_area" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="260" y="140" width="520" height="540" as="geometry" />
+        </mxCell>
+        
+        <!-- Today's Date -->
+        <mxCell id="today_date" value="Today: [Current Date]" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontColor=#666666" vertex="1" parent="1">
+          <mxGeometry x="280" y="150" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Page Title -->
+        <mxCell id="page_title" value="Today's Appointments" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="170" width="230" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Action Button -->
+        <mxCell id="action_button" value="Block Time Slot" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="520" y="165" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="print_button" value="Print Schedule" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="650" y="165" width="120" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- First Section -->
+        <mxCell id="first_section" value="Morning Appointments" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="220" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Morning Appointments -->
+        <!-- Appointment 1 -->
+        <mxCell id="morning_app1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=left;" vertex="1" parent="1">
+          <mxGeometry x="280" y="250" width="480" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_time1" value="09:00 AM" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="255" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_patient1" value="Patient Name" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="255" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_reason1" value="Annual Checkup - First Visit" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="380" y="275" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_status1" value="Checked In" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="295" width="80" height="25" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_actions1" value="Start Appointment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;align=center;" vertex="1" parent="1">
+          <mxGeometry x="570" y="272.5" width="130" height="35" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_view1" value="View Details" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="470" y="297.5" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment 2 -->
+        <mxCell id="morning_app2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;" vertex="1" parent="1">
+          <mxGeometry x="280" y="340" width="480" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_time2" value="10:30 AM" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="345" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_patient2" value="Patient Name" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="345" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_reason2" value="Follow-up Consultation" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="380" y="365" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_status2" value="Scheduled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="385" width="80" height="25" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_actions2" value="Mark as Arrived" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;" vertex="1" parent="1">
+          <mxGeometry x="570" y="362.5" width="130" height="35" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="morning_view2" value="View Details" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="470" y="387.5" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Second Section -->
+        <mxCell id="second_section" value="Afternoon Appointments" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="440" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Afternoon Appointments -->
+        <!-- Appointment 3 -->
+        <mxCell id="afternoon_app1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=left;" vertex="1" parent="1">
+          <mxGeometry x="280" y="470" width="480" height="80" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_time1" value="01:45 PM" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="475" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_patient1" value="Patient Name" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="475" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_reason1" value="Prescription Renewal" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="380" y="495" width="170" height="20" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_status1" value="Scheduled" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="515" width="80" height="25" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_actions1" value="Mark as Arrived" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;align=center;" vertex="1" parent="1">
+          <mxGeometry x="570" y="492.5" width="130" height="35" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="afternoon_view1" value="View Details" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="470" y="517.5" width="80" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Bottom Section -->
+        <mxCell id="upcoming_section" value="Upcoming Days" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="280" y="570" width="230" height="20" as="geometry" />
+        </mxCell>
+        
+        <!-- Day Pills -->
+        <mxCell id="day_tomorrow" value="Tomorrow: 8 appointments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="280" y="600" width="150" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="day_wed" value="Day 3: 6 appointments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="440" y="600" width="150" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="day_thu" value="Day 4: 7 appointments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="600" y="600" width="150" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="day_fri" value="Day 5: 5 appointments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="280" y="640" width="150" height="30" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="day_view_all" value="View Full Schedule" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#0066CC;" vertex="1" parent="1">
+          <mxGeometry x="650" y="640" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

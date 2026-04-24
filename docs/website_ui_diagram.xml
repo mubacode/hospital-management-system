@@ -1,0 +1,327 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.4">
+  <diagram id="hospital_website_ui" name="Hospital Appointment System Website UI">
+    <mxGraphModel dx="1111" dy="507" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;&lt;b&gt;Hospital Appointment System - Website UI Design&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="284.5" y="20" width="600" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Homepage Container -->
+        <mxCell id="homepage" value="Homepage" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="80" width="240" height="250" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="homepage_header" value="Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="homepage">
+          <mxGeometry y="26" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Logo -->
+        <mxCell id="homepage_logo" value="Logo" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="homepage">
+          <mxGeometry y="56" width="60" height="24" as="geometry" />
+        </mxCell>
+        
+        <!-- Navigation -->
+        <mxCell id="homepage_nav" value="Navigation Menu" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="homepage">
+          <mxGeometry x="60" y="56" width="180" height="24" as="geometry" />
+        </mxCell>
+        
+        <!-- Hero Section -->
+        <mxCell id="homepage_hero" value="Hero Banner&lt;br&gt;(Welcome Message, CTA)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="homepage">
+          <mxGeometry y="80" width="240" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Features Section -->
+        <mxCell id="homepage_features" value="Key Features / Services" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="homepage">
+          <mxGeometry y="140" width="240" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Showcase -->
+        <mxCell id="homepage_doctors" value="Featured Doctors" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="homepage">
+          <mxGeometry y="180" width="240" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Footer -->
+        <mxCell id="homepage_footer" value="Footer (Contact Info, Quick Links)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="homepage">
+          <mxGeometry y="220" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Login Page -->
+        <mxCell id="login_page" value="Login Page" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="370" width="240" height="190" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="login_header" value="Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="login_page">
+          <mxGeometry y="26" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Login Form -->
+        <mxCell id="login_form" value="Login Form&lt;br&gt;&lt;br&gt;Email/Username Field&lt;br&gt;&lt;br&gt;Password Field&lt;br&gt;&lt;br&gt;Login Button" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="login_page">
+          <mxGeometry y="56" width="240" height="104" as="geometry" />
+        </mxCell>
+        
+        <!-- Registration Link -->
+        <mxCell id="login_register_link" value="Register Link | Forgot Password" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="login_page">
+          <mxGeometry y="160" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Registration Page -->
+        <mxCell id="registration_page" value="Registration Page" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="590" width="240" height="190" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="registration_header" value="Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="registration_page">
+          <mxGeometry y="26" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Registration Form -->
+        <mxCell id="registration_form" value="Registration Form&lt;br&gt;&lt;br&gt;Name, Email, Phone Fields&lt;br&gt;&lt;br&gt;Password, Confirm Password&lt;br&gt;&lt;br&gt;Register Button" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="registration_page">
+          <mxGeometry y="56" width="240" height="104" as="geometry" />
+        </mxCell>
+        
+        <!-- Login Link -->
+        <mxCell id="registration_login_link" value="Already have an account? Login" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="registration_page">
+          <mxGeometry y="160" width="240" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Patient Dashboard -->
+        <mxCell id="patient_dashboard" value="Patient Dashboard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="80" width="360" height="300" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="patient_dashboard_header" value="Header with User Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="patient_dashboard">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Dashboard Navigation -->
+        <mxCell id="patient_dashboard_nav" value="Dashboard Navigation" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="patient_dashboard">
+          <mxGeometry y="56" width="90" height="214" as="geometry" />
+        </mxCell>
+        
+        <!-- Upcoming Appointments -->
+        <mxCell id="patient_upcoming_appointments" value="Upcoming Appointments" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="patient_dashboard">
+          <mxGeometry x="90" y="56" width="270" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Past Appointments -->
+        <mxCell id="patient_past_appointments" value="Past Appointments" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="patient_dashboard">
+          <mxGeometry x="90" y="136" width="270" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Quick Actions -->
+        <mxCell id="patient_quick_actions" value="Quick Actions&lt;br&gt;(Book Appointment, View Profile, Notifications)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="patient_dashboard">
+          <mxGeometry x="90" y="216" width="270" height="54" as="geometry" />
+        </mxCell>
+        
+        <!-- Footer -->
+        <mxCell id="patient_footer" value="Footer" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="patient_dashboard">
+          <mxGeometry y="270" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Booking Page -->
+        <mxCell id="appointment_booking" value="Appointment Booking" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="400" width="360" height="380" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="appointment_header" value="Header with User Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Department Selection -->
+        <mxCell id="appointment_department" value="Department Selection" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="56" width="360" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Selection -->
+        <mxCell id="appointment_doctor" value="Doctor Selection" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="96" width="360" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Calendar -->
+        <mxCell id="appointment_calendar" value="Date Selection Calendar" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="156" width="180" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- Time Slots -->
+        <mxCell id="appointment_time_slots" value="Available Time Slots" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="appointment_booking">
+          <mxGeometry x="180" y="156" width="180" height="110" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Details -->
+        <mxCell id="appointment_details" value="Appointment Details&lt;br&gt;(Reason for Visit, Notes, etc.)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="266" width="360" height="60" as="geometry" />
+        </mxCell>
+        
+        <!-- Confirm Button -->
+        <mxCell id="appointment_confirm" value="Confirm Appointment" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="appointment_booking">
+          <mxGeometry x="110" y="336" width="140" height="34" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Dashboard -->
+        <mxCell id="doctor_dashboard" value="Doctor Dashboard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="840" y="80" width="280" height="300" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="doctor_dashboard_header" value="Header with Doctor Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry y="26" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Dashboard Navigation -->
+        <mxCell id="doctor_dashboard_nav" value="Dashboard Navigation" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry y="56" width="70" height="214" as="geometry" />
+        </mxCell>
+        
+        <!-- Today's Schedule -->
+        <mxCell id="doctor_today_schedule" value="Today's Appointments" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry x="70" y="56" width="210" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Upcoming Appointments -->
+        <mxCell id="doctor_upcoming_appointments" value="Upcoming Appointments" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry x="70" y="156" width="210" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Quick Actions -->
+        <mxCell id="doctor_quick_actions" value="Quick Actions&lt;br&gt;(Update Schedule, Patient Records)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry x="70" y="226" width="210" height="44" as="geometry" />
+        </mxCell>
+        
+        <!-- Footer -->
+        <mxCell id="doctor_footer" value="Footer" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="doctor_dashboard">
+          <mxGeometry y="270" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Schedule Management -->
+        <mxCell id="doctor_schedule_page" value="Doctor Schedule Management" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="840" y="400" width="280" height="300" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="schedule_header" value="Header with Doctor Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="doctor_schedule_page">
+          <mxGeometry y="26" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Weekly Calendar View -->
+        <mxCell id="schedule_calendar" value="Weekly Schedule Calendar" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="doctor_schedule_page">
+          <mxGeometry y="56" width="280" height="130" as="geometry" />
+        </mxCell>
+        
+        <!-- Time Slot Management -->
+        <mxCell id="schedule_time_slots" value="Available/Unavailable Time Slot Management" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="doctor_schedule_page">
+          <mxGeometry y="186" width="280" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Save Button -->
+        <mxCell id="schedule_save" value="Save Schedule" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="doctor_schedule_page">
+          <mxGeometry x="70" y="266" width="140" height="34" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Confirmation -->
+        <mxCell id="appointment_confirmation" value="Appointment Confirmation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="840" y="720" width="280" height="240" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="confirmation_header" value="Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="26" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Confirmation Message -->
+        <mxCell id="confirmation_message" value="Success Message" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="56" width="280" height="40" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Details -->
+        <mxCell id="confirmation_details" value="Appointment Details Summary&lt;br&gt;Doctor, Date, Time, Department" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="96" width="280" height="84" as="geometry" />
+        </mxCell>
+        
+        <!-- Action Buttons -->
+        <mxCell id="confirmation_actions" value="Add to Calendar | Print | Back to Dashboard" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="180" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Footer -->
+        <mxCell id="confirmation_footer" value="Footer" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="210" width="280" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Notification Panel -->
+        <mxCell id="notification_panel" value="Notifications" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="400" y="800" width="360" height="160" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="notification_header" value="Notifications Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="notification_panel">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Notification List -->
+        <mxCell id="notification_list" value="List of Notifications&lt;br&gt;(Appointment Reminders, Updates, System Messages)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="notification_panel">
+          <mxGeometry y="56" width="360" height="74" as="geometry" />
+        </mxCell>
+        
+        <!-- Mark All Read Button -->
+        <mxCell id="notification_mark_read" value="Mark All as Read" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="notification_panel">
+          <mxGeometry x="240" y="130" width="120" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Navigation Connections -->
+        <!-- Homepage to Login -->
+        <mxCell id="homepage_to_login" value="Login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="homepage" target="login_page">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Login to Registration -->
+        <mxCell id="login_to_registration" value="Register" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="login_page" target="registration_page">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Login to Patient Dashboard -->
+        <mxCell id="login_to_patient_dashboard" value="Patient Login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="login_page" target="patient_dashboard">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Login to Doctor Dashboard -->
+        <mxCell id="login_to_doctor_dashboard" value="Doctor Login" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="login_page" target="doctor_dashboard">
+          <mxGeometry x="0.3333" y="-10" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Patient Dashboard to Appointment Booking -->
+        <mxCell id="patient_to_booking" value="Book Appointment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="patient_dashboard" target="appointment_booking">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Booking to Confirmation -->
+        <mxCell id="booking_to_confirmation" value="Confirm" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="appointment_booking" target="appointment_confirmation">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="980" y="685" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Doctor Dashboard to Schedule Management -->
+        <mxCell id="doctor_to_schedule" value="Manage Schedule" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="doctor_dashboard" target="doctor_schedule_page">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Dashboards to Notifications -->
+        <mxCell id="dashboard_to_notifications" value="View Notifications" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="appointment_booking" target="notification_panel">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 

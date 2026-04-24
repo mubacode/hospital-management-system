@@ -1,0 +1,153 @@
+/* General Styles */
+body {
+  background-color: #f8f9fa;
+}
+
+.App {
+  min-height: 100vh;
+}
+
+/* Card Styles */
+.card {
+  border-radius: 0.5rem;
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+.card-header {
+  border-top-left-radius: 0.5rem !important;
+  border-top-right-radius: 0.5rem !important;
+}
+
+/* Form Styles */
+.form-control, .form-select {
+  border-radius: 0.25rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dee2e6;
+}
+
+.form-control:focus, .form-select:focus {
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.15);
+}
+
+/* Button Styles */
+.btn {
+  border-radius: 0.25rem;
+  padding: 0.5rem 1.5rem;
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+}
+
+.btn-primary:hover {
+  background-color: #0b5ed7;
+}
+
+/* Table Styles */
+.table {
+  vertical-align: middle;
+}
+
+.table thead th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #495057;
+  border-bottom-width: 1px;
+}
+
+/* Dashboard Stats Cards */
+.stats-card {
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Avatar Style */
+.avatar-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* Badge Styles */
+.badge {
+  font-weight: normal;
+  padding: 0.5em 0.75em;
+  border-radius: 0.25rem;
+}
+
+/* Navigation Styles */
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer Styles */
+footer {
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+/* Animation for Loading States */
+@keyframes pulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}

@@ -1,0 +1,254 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36" version="27.1.4">
+  <diagram id="hospital_appointment_ui" name="Hospital Appointment System UI">
+    <mxGraphModel dx="1111" dy="507" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <!-- Title -->
+        <mxCell id="title" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;&lt;b&gt;Hospital Appointment System - UI Flow&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="284.5" y="20" width="600" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Patient View -->
+        <mxCell id="patient_section_title" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;Patient View&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="60" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Patient Appointments List -->
+        <mxCell id="patient_appointments" value="Patient Appointments Dashboard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="100" width="360" height="160" as="geometry" />
+        </mxCell>
+        
+        <!-- Patient Header Section -->
+        <mxCell id="patient_appointments_header" value="Header with User Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="patient_appointments">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Upcoming Appointments -->
+        <mxCell id="patient_upcoming_appointments" value="Upcoming Appointments&lt;br&gt;- Doctor Name, Specialty&lt;br&gt;- Date and Time&lt;br&gt;- Department&lt;br&gt;- Status (Confirmed, Pending)&lt;br&gt;- Actions (Cancel, Reschedule)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="patient_appointments">
+          <mxGeometry y="56" width="360" height="104" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Booking Page -->
+        <mxCell id="appointment_booking" value="Appointment Booking Interface" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="300" width="360" height="350" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="appointment_header" value="Booking Process Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Department Selection -->
+        <mxCell id="appointment_department" value="Step 1: Department Selection&lt;br&gt;- Cardiology&lt;br&gt;- Neurology&lt;br&gt;- Orthopedics&lt;br&gt;- etc." style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="56" width="360" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Selection -->
+        <mxCell id="appointment_doctor" value="Step 2: Doctor Selection&lt;br&gt;- Doctor Name, Photo&lt;br&gt;- Specialty, Experience&lt;br&gt;- Available Days" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="126" width="360" height="70" as="geometry" />
+        </mxCell>
+        
+        <!-- Date Time Selection -->
+        <mxCell id="appointment_datetime" value="Step 3: Date &amp; Time Selection" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="196" width="360" height="100" as="geometry" />
+        </mxCell>
+        
+        <!-- Calendar -->
+        <mxCell id="appointment_calendar" value="Calendar" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_datetime">
+          <mxGeometry y="26" width="180" height="74" as="geometry" />
+        </mxCell>
+        
+        <!-- Time Slots -->
+        <mxCell id="appointment_time_slots" value="Available Time Slots" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="appointment_datetime">
+          <mxGeometry x="180" y="26" width="180" height="74" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Details -->
+        <mxCell id="appointment_details" value="Step 4: Appointment Details&lt;br&gt;- Reason for Visit&lt;br&gt;- Additional Notes&lt;br&gt;- Medical History Reference" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="appointment_booking">
+          <mxGeometry y="296" width="360" height="54" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Confirmation -->
+        <mxCell id="appointment_confirmation" value="Appointment Confirmation" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="120" y="690" width="360" height="200" as="geometry" />
+        </mxCell>
+        
+        <!-- Confirmation Message -->
+        <mxCell id="confirmation_message" value="Success Message" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Details -->
+        <mxCell id="confirmation_details" value="Appointment Details Summary&lt;br&gt;&lt;br&gt;- Doctor: Dr. [Name], [Specialty]&lt;br&gt;- Date: [Date]&lt;br&gt;- Time: [Time]&lt;br&gt;- Department: [Department]&lt;br&gt;- Reference ID: [ID]" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="56" width="360" height="114" as="geometry" />
+        </mxCell>
+        
+        <!-- Action Buttons -->
+        <mxCell id="confirmation_actions" value="Add to Calendar | Print | Back to Dashboard" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_confirmation">
+          <mxGeometry y="170" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor View -->
+        <mxCell id="doctor_section_title" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;Doctor View&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="770" y="60" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Dashboard -->
+        <mxCell id="doctor_appointments" value="Doctor Appointments Dashboard" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="690" y="100" width="360" height="220" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Header Section -->
+        <mxCell id="doctor_appointments_header" value="Header with Doctor Info" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="doctor_appointments">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Today's Appointments -->
+        <mxCell id="doctor_today_appointments" value="Today's Appointments&lt;br&gt;- Patient Name&lt;br&gt;- Time Slot&lt;br&gt;- Status&lt;br&gt;- Actions (Check-in, Complete, No-show)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="doctor_appointments">
+          <mxGeometry y="56" width="360" height="84" as="geometry" />
+        </mxCell>
+        
+        <!-- Upcoming Appointments -->
+        <mxCell id="doctor_upcoming_appointments" value="Upcoming Appointments&lt;br&gt;- Date&lt;br&gt;- Patient&lt;br&gt;- Time&lt;br&gt;- Actions (Reschedule, Cancel)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="doctor_appointments">
+          <mxGeometry y="140" width="360" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Schedule Management -->
+        <mxCell id="doctor_schedule" value="Doctor Schedule Management" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="690" y="360" width="360" height="220" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Schedule Header -->
+        <mxCell id="schedule_header" value="Schedule Management Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="doctor_schedule">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Weekly Calendar View -->
+        <mxCell id="schedule_calendar" value="Weekly Schedule Calendar&lt;br&gt;&lt;br&gt;- Color-coded time blocks&lt;br&gt;- Booked appointments&lt;br&gt;- Available slots&lt;br&gt;- Blocked/unavailable time" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="doctor_schedule">
+          <mxGeometry y="56" width="360" height="104" as="geometry" />
+        </mxCell>
+        
+        <!-- Time Slot Management -->
+        <mxCell id="schedule_time_slots" value="Set Availability / Block Time Slots" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="doctor_schedule">
+          <mxGeometry y="160" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Save Button -->
+        <mxCell id="schedule_save" value="Save Changes" style="rounded=1;whiteSpace=wrap;html=1;align=center;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1" vertex="1" parent="doctor_schedule">
+          <mxGeometry x="110" y="190" width="140" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Details View -->
+        <mxCell id="appointment_details_view" value="Appointment Details View" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="690" y="620" width="360" height="270" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="details_header" value="Appointment Details Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_details_view">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Patient Info -->
+        <mxCell id="details_patient" value="Patient Information&lt;br&gt;&lt;br&gt;- Patient Name, ID, Contact Info&lt;br&gt;- Age, Gender&lt;br&gt;- Previous Visit History" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_details_view">
+          <mxGeometry y="56" width="360" height="84" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Info -->
+        <mxCell id="details_appointment" value="Appointment Information&lt;br&gt;&lt;br&gt;- Date, Time&lt;br&gt;- Reason for Visit&lt;br&gt;- Patient-provided Notes" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_details_view">
+          <mxGeometry y="140" width="360" height="80" as="geometry" />
+        </mxCell>
+        
+        <!-- Action Buttons -->
+        <mxCell id="details_actions" value="Complete | No-show | Reschedule | Cancel" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_details_view">
+          <mxGeometry y="220" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Receptionist View -->
+        <mxCell id="receptionist_section_title" value="&lt;font style=&quot;font-size: 14px;&quot;&gt;&lt;b&gt;Receptionist View&lt;/b&gt;&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="485" y="990" width="200" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointment Management -->
+        <mxCell id="appointment_management" value="Appointment Management Interface" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="405" y="1030" width="360" height="250" as="geometry" />
+        </mxCell>
+        
+        <!-- Header Section -->
+        <mxCell id="management_header" value="Appointment Management Header" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="appointment_management">
+          <mxGeometry y="26" width="360" height="30" as="geometry" />
+        </mxCell>
+        
+        <!-- Filter and Search -->
+        <mxCell id="management_filter" value="Search and Filter Options&lt;br&gt;(by doctor, date, status, patient, department)" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="appointment_management">
+          <mxGeometry y="56" width="360" height="44" as="geometry" />
+        </mxCell>
+        
+        <!-- Appointments List -->
+        <mxCell id="management_list" value="All Appointments&lt;br&gt;&lt;br&gt;- Date/Time&lt;br&gt;- Patient Name&lt;br&gt;- Doctor Name&lt;br&gt;- Department&lt;br&gt;- Status&lt;br&gt;- Actions" style="rounded=0;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="appointment_management">
+          <mxGeometry y="100" width="360" height="124" as="geometry" />
+        </mxCell>
+        
+        <!-- Action Buttons -->
+        <mxCell id="management_actions" value="Create New | Check In Patient | Manage Cancellations" style="rounded=0;whiteSpace=wrap;html=1;align=center;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="appointment_management">
+          <mxGeometry y="224" width="360" height="26" as="geometry" />
+        </mxCell>
+        
+        <!-- Navigation Connections -->
+        <!-- Patient Dashboard to Booking -->
+        <mxCell id="patient_to_booking" value="Book New Appointment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="patient_appointments" target="appointment_booking">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Booking to Confirmation -->
+        <mxCell id="booking_to_confirmation" value="Submit" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;" edge="1" parent="1" source="appointment_booking" target="appointment_confirmation">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Confirmation back to Dashboard -->
+        <mxCell id="confirmation_to_dashboard" value="Return to Dashboard" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="appointment_confirmation" target="patient_appointments">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="80" y="740" />
+              <mxPoint x="80" y="180" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <!-- Doctor Dashboard to Schedule Management -->
+        <mxCell id="doctor_to_schedule" value="Manage Schedule" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#dae8fc;strokeColor=#6c8ebf;" edge="1" parent="1" source="doctor_appointments" target="doctor_schedule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- Doctor Dashboard to Appointment Details -->
+        <mxCell id="doctor_to_details" value="View Appointment" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="doctor_schedule" target="appointment_details_view">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <!-- System Flow Connections -->
+        <mxCell id="new_appointment_notification" value="New Appointment Created" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#f8cecc;strokeColor=#b85450;" edge="1" parent="1" source="confirmation_message" target="details_appointment">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="731" />
+              <mxPoint x="560" y="800" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        
+        <mxCell id="appointment_update_flow" value="Appointment Changes" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;dashed=1;fillColor=#fff2cc;strokeColor=#d6b656;" edge="1" parent="1" source="doctor_appointments" target="patient_appointments">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        
+        <mxCell id="manage_all_appointments" value="Manage All Appointments" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;strokeWidth=2;fillColor=#ffe6cc;strokeColor=#d79b00;" edge="1" parent="1" source="appointment_details_view" target="appointment_management">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="870" y="950" />
+              <mxPoint x="585" y="950" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile> 
