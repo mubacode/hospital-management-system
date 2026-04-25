@@ -19,27 +19,27 @@ import DashboardLayout from './components/layout/DashboardLayout';
 import { getHomePath } from './utils/roleGuard';
 
 // ── Admin Pages ─────────────────────────────────────────────────────────────
-import AdminDashboard          from './pages/admin/Dashboard';
-import DoctorManagement        from './pages/admin/DoctorManagement';
-import PatientManagement       from './pages/admin/PatientManagement';
+import AdminDashboard from './pages/admin/Dashboard';
+import DoctorManagement from './pages/admin/DoctorManagement';
+import PatientManagement from './pages/admin/PatientManagement';
 import AdminAppointmentManagement from './pages/admin/AppointmentManagement';
-import UserManagement          from './pages/admin/UserManagement';
-import ReceptionManagement     from './pages/admin/ReceptionManagement';
-import ClinicManagement        from './pages/admin/ClinicManagement';
+import UserManagement from './pages/admin/UserManagement';
+import ReceptionManagement from './pages/admin/ReceptionManagement';
+import ClinicManagement from './pages/admin/ClinicManagement';
 
 // ── Doctor Pages ────────────────────────────────────────────────────────────
-import DoctorDashboard    from './pages/doctor/Dashboard';
+import DoctorDashboard from './pages/doctor/Dashboard';
 import DoctorAppointments from './pages/doctor/Appointments';
-import DoctorPatients     from './pages/doctor/Patients';
+import DoctorPatients from './pages/doctor/Patients';
 
 // ── Patient Pages ───────────────────────────────────────────────────────────
 import PatientDashboard from './pages/patient/Dashboard';
-import BookAppointment  from './pages/patient/BookAppointment';
-import MedicalHistory   from './pages/patient/MedicalHistory';
+import BookAppointment from './pages/patient/BookAppointment';
+import MedicalHistory from './pages/patient/MedicalHistory';
 
 // ── Reception Pages ─────────────────────────────────────────────────────────
-import ReceptionDashboard    from './pages/reception/Dashboard';
-import PatientRegistration   from './pages/reception/PatientRegistration';
+import ReceptionDashboard from './pages/reception/Dashboard';
+import PatientRegistration from './pages/reception/PatientRegistration';
 import GlobalScheduleMonitor from './pages/reception/AppointmentManagement';
 
 // ── Shared ──────────────────────────────────────────────────────────────────
@@ -64,6 +64,8 @@ const Unauthorized = () => (
   </div>
 );
 
+const SESSION_TIMEOUT_MINUTES = 15;
+const SESSION_TIMEOUT_MS = SESSION_TIMEOUT_MINUTES * 60 * 1000;
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -72,14 +74,13 @@ function App() {
 
   useEffect(() => {
     // Restore session from localStorage on mount — data persistence
-    const token    = localStorage.getItem('token');
+    const token = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
     const lastActivity = localStorage.getItem('lastActivity');
-    const timeoutMs = 15 * 60 * 1000; // 15 minutes
 
     if (token && userData) {
       const now = Date.now();
-      const isInactive = lastActivity && (now - parseInt(lastActivity, 10) >= timeoutMs);
+      const isInactive = lastActivity && (now - parseInt(lastActivity, 10) >= SESSION_TIMEOUT_MS);
 
       if (isInactive) {
         localStorage.removeItem('token');
@@ -98,19 +99,20 @@ function App() {
     setLoading(false);
   }, []);
 
-  const login = (userData, token) => {
+  const login = useCallback((userData, token) => {
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
     setUser(userData);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('lastActivity');
     setIsAuthenticated(false);
     setUser(null);
-  };
+  }, []);
 
   if (loading) return <LoadingScreen />;
 
@@ -123,7 +125,7 @@ function App() {
    * mirror the permission map in utils/roleGuard.js.
    */
   const ProtectedRoute = ({ children, allowedRoles = [] }) => {
-    if (!isAuthenticated)                                       return <Navigate to="/login" replace />;
+    if (!isAuthenticated) return <Navigate to="/login" replace />;
     if (allowedRoles.length > 0 && !allowedRoles.includes(user?.role)) return <Unauthorized />;
     return children;
   };
@@ -131,13 +133,16 @@ function App() {
   return (
     <Router>
       <div className="App d-flex flex-column min-vh-100">
+        {isAuthenticated && (
+          <SessionTimeout logout={logout} timeoutInMinutes={SESSION_TIMEOUT_MINUTES} />
+        )}
         {!isAuthenticated ? (
           <>
             <Header isAuthenticated={false} logout={logout} />
             <main className="flex-grow-1 container py-4">
               <Routes>
-                <Route path="/login"         element={<Login login={login} />} />
-                <Route path="/register"      element={<Register />} />
+                <Route path="/login" element={<Login login={login} />} />
+                <Route path="/register" element={<Register />} />
                 <Route path="/setup-account" element={<SetupAccount />} />
                 <Route path="*" element={<Navigate to="/login" replace />} />
               </Routes>
@@ -146,44 +151,40 @@ function App() {
           </>
         ) : (
           <DashboardLayout user={user} logout={logout}>
-            <SessionTimeout logout={logout} />
             <Routes>
-
               {/* ── Admin ─────────────────────────────────────────────────── */}
-              <Route path="/admin"              element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
-              <Route path="/admin/doctors"      element={<ProtectedRoute allowedRoles={['admin']}><DoctorManagement /></ProtectedRoute>} />
-              <Route path="/admin/patients"     element={<ProtectedRoute allowedRoles={['admin']}><PatientManagement /></ProtectedRoute>} />
+              <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']}><AdminDashboard /></ProtectedRoute>} />
+              <Route path="/admin/doctors" element={<ProtectedRoute allowedRoles={['admin']}><DoctorManagement /></ProtectedRoute>} />
+              <Route path="/admin/patients" element={<ProtectedRoute allowedRoles={['admin']}><PatientManagement /></ProtectedRoute>} />
               <Route path="/admin/appointments" element={<ProtectedRoute allowedRoles={['admin']}><AdminAppointmentManagement /></ProtectedRoute>} />
-              <Route path="/admin/users"        element={<ProtectedRoute allowedRoles={['admin']}><UserManagement /></ProtectedRoute>} />
-              <Route path="/admin/reception"    element={<ProtectedRoute allowedRoles={['admin']}><ReceptionManagement /></ProtectedRoute>} />
-              <Route path="/admin/departments"  element={<ProtectedRoute allowedRoles={['admin']}><ClinicManagement /></ProtectedRoute>} />
+              <Route path="/admin/users" element={<ProtectedRoute allowedRoles={['admin']}><UserManagement /></ProtectedRoute>} />
+              <Route path="/admin/reception" element={<ProtectedRoute allowedRoles={['admin']}><ReceptionManagement /></ProtectedRoute>} />
+              <Route path="/admin/departments" element={<ProtectedRoute allowedRoles={['admin']}><ClinicManagement /></ProtectedRoute>} />
 
               {/* ── Doctor ────────────────────────────────────────────────── */}
-              <Route path="/doctor"              element={<ProtectedRoute allowedRoles={['doctor']}><DoctorDashboard /></ProtectedRoute>} />
+              <Route path="/doctor" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorDashboard /></ProtectedRoute>} />
               <Route path="/doctor/appointments" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorAppointments /></ProtectedRoute>} />
-              <Route path="/doctor/patients"     element={<ProtectedRoute allowedRoles={['doctor']}><DoctorPatients /></ProtectedRoute>} />
+              <Route path="/doctor/patients" element={<ProtectedRoute allowedRoles={['doctor']}><DoctorPatients /></ProtectedRoute>} />
 
               {/* ── Patient ───────────────────────────────────────────────── */}
-              <Route path="/patient"                    element={<ProtectedRoute allowedRoles={['patient']}><PatientDashboard /></ProtectedRoute>} />
-              <Route path="/patient/appointments/book"  element={<ProtectedRoute allowedRoles={['patient']}><BookAppointment /></ProtectedRoute>} />
-              <Route path="/patient/medical-history"    element={<ProtectedRoute allowedRoles={['patient']}><MedicalHistory /></ProtectedRoute>} />
+              <Route path="/patient" element={<ProtectedRoute allowedRoles={['patient']}><PatientDashboard /></ProtectedRoute>} />
+              <Route path="/patient/appointments/book" element={<ProtectedRoute allowedRoles={['patient']}><BookAppointment /></ProtectedRoute>} />
+              <Route path="/patient/medical-history" element={<ProtectedRoute allowedRoles={['patient']}><MedicalHistory /></ProtectedRoute>} />
 
               {/* ── Reception ─────────────────────────────────────────────── */}
-              <Route path="/reception"                     element={<ProtectedRoute allowedRoles={['receptionist']}><ReceptionDashboard /></ProtectedRoute>} />
-              <Route path="/reception/patients/register"   element={<ProtectedRoute allowedRoles={['receptionist']}><PatientRegistration /></ProtectedRoute>} />
-              <Route path="/reception/appointments"        element={<ProtectedRoute allowedRoles={['receptionist']}><GlobalScheduleMonitor /></ProtectedRoute>} />
+              <Route path="/reception" element={<ProtectedRoute allowedRoles={['receptionist']}><ReceptionDashboard /></ProtectedRoute>} />
+              <Route path="/reception/patients/register" element={<ProtectedRoute allowedRoles={['receptionist']}><PatientRegistration /></ProtectedRoute>} />
+              <Route path="/reception/appointments" element={<ProtectedRoute allowedRoles={['receptionist']}><GlobalScheduleMonitor /></ProtectedRoute>} />
 
               {/* ── Shared ────────────────────────────────────────────────── */}
-              <Route path="/setup-account"  element={<SetupAccount />} />
+              <Route path="/setup-account" element={<SetupAccount />} />
               <Route path="/change-password" element={<ProtectedRoute><ChangePassword /></ProtectedRoute>} />
 
               {/* ── Smart Home Redirect ───────────────────────────────────── */}
-              {/* Sends each role to their own panel home using getHomePath() */}
               <Route path="/" element={<Navigate to={getHomePath(user?.role)} replace />} />
 
               {/* ── 404 Catch-all ─────────────────────────────────────────── */}
               <Route path="*" element={<Navigate to={getHomePath(user?.role)} replace />} />
-
             </Routes>
           </DashboardLayout>
         )}
