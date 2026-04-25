@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -64,7 +64,7 @@ const Unauthorized = () => (
   </div>
 );
 
-const SESSION_TIMEOUT_MINUTES = 15;
+const SESSION_TIMEOUT_MINUTES = 0.1;
 const SESSION_TIMEOUT_MS = SESSION_TIMEOUT_MINUTES * 60 * 1000;
 
 function App() {
