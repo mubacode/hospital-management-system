@@ -74,14 +74,25 @@ function App() {
     // Restore session from localStorage on mount — data persistence
     const token    = localStorage.getItem('token');
     const userData = localStorage.getItem('user');
+    const lastActivity = localStorage.getItem('lastActivity');
+    const timeoutMs = 15 * 60 * 1000; // 15 minutes
+
     if (token && userData) {
-      try {
-        setIsAuthenticated(true);
-        setUser(JSON.parse(userData));
-      } catch {
-        // Corrupt storage — clear it
+      const now = Date.now();
+      const isInactive = lastActivity && (now - parseInt(lastActivity, 10) >= timeoutMs);
+
+      if (isInactive) {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
+        localStorage.removeItem('lastActivity');
+      } else {
+        try {
+          setIsAuthenticated(true);
+          setUser(JSON.parse(userData));
+        } catch {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
       }
     }
     setLoading(false);
