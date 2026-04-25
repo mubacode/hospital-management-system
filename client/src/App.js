@@ -8,6 +8,7 @@ import './i18n';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import SetupAccount from './pages/auth/SetupAccount';
+import SessionTimeout from './components/auth/SessionTimeout';
 
 // Layout
 import Header from './components/layout/Header';
@@ -134,6 +135,7 @@ function App() {
           </>
         ) : (
           <DashboardLayout user={user} logout={logout}>
+            <SessionTimeout logout={logout} />
             <Routes>
 
               {/* ── Admin ─────────────────────────────────────────────────── */}
