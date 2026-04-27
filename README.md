@@ -1,16 +1,21 @@
 # .env dosyası örnegi
    ```
-DB_HOST=localhost
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=sifre
-DB_NAME=hospital_management
-JWT_SECRET=your_jwt_secret_key
+
+DB_HOST=your_database_host
+DB_PORT=your_database_port
+DB_USER=your_database_username
+DB_PASSWORD=your_database_password
+DB_NAME=your_database_name
+
 PORT=5000
-SMTP_USER=systemonlinehospital@gmail.com
-SMTP_PASS=cpkvlxqwgarxrgne
+JWT_SECRET=your_jwt_secret_key
+
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
 EMAIL_VERIFICATION_ENABLED=true
-   ```
+
+OPENROUTER_API_KEY=your_openrouter_api_key
+
 
 
 
