@@ -19,7 +19,7 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // Initialize express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT;
 
 // Debug environment variables
 console.log('Environment variables loaded:');

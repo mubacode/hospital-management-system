@@ -5,9 +5,8 @@ const dotenv = require('dotenv');
 // Load environment variables from .env file
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-// Hardcoded fallbacks in case environment variables aren't loaded
-const SMTP_USER = process.env.SMTP_USER || 'systemonlinehospital@gmail.com';
-const SMTP_PASS = process.env.SMTP_PASS || 'cpkvlxqwgarxrgne';
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
 
 console.log('Email Config - SMTP User:', SMTP_USER);
 console.log('Email Config - SMTP Pass length:', SMTP_PASS ? SMTP_PASS.length : 0);
@@ -26,7 +25,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Verify connection configuration
-transporter.verify(function(error, success) {
+transporter.verify(function (error, success) {
   if (error) {
     console.log('Email service error:', error);
   } else {
@@ -97,9 +96,9 @@ const getAppointmentConfirmationEmailTemplate = (patientName, doctorName, date, 
     <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 5px;">
       <h2 style="color: #333;">${isReschedule ? 'Appointment Rescheduled' : 'Appointment Confirmation'}</h2>
       <p>Dear ${patientName},</p>
-      <p>${isReschedule 
-          ? 'Your appointment has been rescheduled. The new details are:' 
-          : 'Your appointment has been confirmed with the following details:'}</p>
+      <p>${isReschedule
+      ? 'Your appointment has been rescheduled. The new details are:'
+      : 'Your appointment has been confirmed with the following details:'}</p>
       <ul>
         <li><strong>Doctor:</strong> ${doctorName}</li>
         <li><strong>Date:</strong> ${date}</li>
@@ -205,12 +204,12 @@ const sendInvitationEmail = async (email, name, role, setupLink) => {
 
 const sendAppointmentPendingEmail = async (patientEmail, patientName, date, time, clinic) => {
   console.log(`Preparing to send pending email to: ${patientEmail} for patient: ${patientName}`);
-  
+
   if (!patientEmail) {
     console.error('Cannot send email: patientEmail is empty or undefined');
     return false;
   }
-  
+
   const mailOptions = {
     from: SMTP_USER,
     to: patientEmail,
@@ -230,7 +229,7 @@ const sendAppointmentPendingEmail = async (patientEmail, patientName, date, time
 
 const sendAppointmentConfirmationEmail = async (patientEmail, patientName, doctorName, date, time, clinic, isReschedule = false) => {
   if (!patientEmail) return false;
-  
+
   const mailOptions = {
     from: SMTP_USER,
     to: patientEmail,
@@ -250,7 +249,7 @@ const sendAppointmentConfirmationEmail = async (patientEmail, patientName, docto
 
 const sendDoctorNewAppointmentEmail = async (doctorEmail, doctorName, patientName, date, time) => {
   if (!doctorEmail) return false;
-  
+
   const mailOptions = {
     from: SMTP_USER,
     to: doctorEmail,

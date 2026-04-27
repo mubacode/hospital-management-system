@@ -7,11 +7,11 @@ const seedDB = async () => {
     
     // Connect explicitly so we don't rely on existing project db.js which has pools
     const connection = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        port: process.env.DB_PORT || 3306,
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD || '',
-        database: process.env.DB_NAME || 'hospital_db',
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
         ssl: process.env.DB_HOST !== 'localhost' ? { rejectUnauthorized: false } : false
     });
 
