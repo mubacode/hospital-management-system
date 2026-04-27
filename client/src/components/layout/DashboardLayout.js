@@ -1,7 +1,7 @@
 import React from 'react';
 import { Nav, Button, Container, Dropdown } from 'react-bootstrap';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { 
+import {
   FaChartLine, FaUserMd, FaUsers, FaCalendarAlt, FaSignOutAlt,
   FaHome, FaPlusCircle, FaHistory, FaClinicMedical, FaHospitalUser, FaShieldAlt, FaGlobe
 } from 'react-icons/fa';
@@ -64,7 +64,7 @@ const DashboardLayout = ({ children, user, logout }) => {
         {/* Logo + Language Switcher */}
         <div className="p-4 border-bottom d-flex justify-content-between align-items-center">
           <h4 className="fw-bold text-primary mb-0 d-flex align-items-center">
-            <div className="bg-primary rounded p-1 me-2 text-white" style={{fontSize: '0.6em'}}>CP</div>
+            <div className="bg-primary rounded p-1 me-2 text-white" style={{ fontSize: '0.6em' }}>CP</div>
             CarePlus
           </h4>
           {/* Language Switcher — stored in localStorage, no page reload */}
@@ -74,14 +74,14 @@ const DashboardLayout = ({ children, user, logout }) => {
               <span>{i18n.language?.toUpperCase().slice(0, 2)}</span>
             </Dropdown.Toggle>
             <Dropdown.Menu className="border-0 shadow-lg rounded-3 p-1">
-              <Dropdown.Item 
-                onClick={() => changeLanguage('en')} 
+              <Dropdown.Item
+                onClick={() => changeLanguage('en')}
                 className={`rounded-2 small px-3 py-2 ${i18n.language?.startsWith('en') ? 'fw-bold text-primary bg-primary-subtle' : ''}`}
               >
                 🇬🇧 English
               </Dropdown.Item>
-              <Dropdown.Item 
-                onClick={() => changeLanguage('tr')} 
+              <Dropdown.Item
+                onClick={() => changeLanguage('tr')}
                 className={`rounded-2 small px-3 py-2 ${i18n.language?.startsWith('tr') ? 'fw-bold text-primary bg-primary-subtle' : ''}`}
               >
                 🇹🇷 Türkçe
@@ -93,11 +93,11 @@ const DashboardLayout = ({ children, user, logout }) => {
         {/* User Profile Pill */}
         <div className="flex-grow-1 px-3 py-4 d-flex flex-column overflow-auto">
           <div className="user-profile mb-4 p-3 bg-light rounded-pill d-flex align-items-center flex-shrink-0">
-            <div className="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3 flex-shrink-0" style={{width: '40px', height: '40px'}}>
+            <div className="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold me-3 flex-shrink-0" style={{ width: '40px', height: '40px' }}>
               {user?.first_name?.[0] || user?.username?.[0]?.toUpperCase()}
             </div>
             <div className="overflow-hidden">
-              <div className="fw-bold text-truncate" style={{fontSize: '0.9em'}}>{user?.first_name || user?.username}</div>
+              <div className="fw-bold text-truncate" style={{ fontSize: '0.9em' }}>{user?.first_name || user?.username}</div>
               <div className="text-muted small text-capitalize">{user?.role}</div>
             </div>
           </div>
@@ -105,10 +105,10 @@ const DashboardLayout = ({ children, user, logout }) => {
           {/* Navigation Menu */}
           <Nav className="flex-column">
             {menuItems.map((item) => (
-              <Nav.Link 
-                key={item.path} 
-                as={NavLink} 
-                to={item.path} 
+              <Nav.Link
+                key={item.path}
+                as={NavLink}
+                to={item.path}
                 end={['/', '/admin', '/doctor', '/patient', '/reception'].includes(item.path)}
                 className="rounded-lg mb-1 py-3 px-3 d-flex align-items-center transition sidebar-link"
               >
@@ -120,18 +120,18 @@ const DashboardLayout = ({ children, user, logout }) => {
 
           {/* Bottom pinned items */}
           <div className="mt-auto pt-3 border-top flex-shrink-0">
-            <Nav.Link 
-              as={NavLink} 
-              to="/change-password" 
+            <Nav.Link
+              as={NavLink}
+              to="/change-password"
               className="rounded-lg mb-1 py-3 px-3 d-flex align-items-center transition sidebar-link"
             >
               <FaShieldAlt className="me-3 fs-5 text-muted" />
               <span className="fw-medium">{t('nav.security')}</span>
             </Nav.Link>
 
-            <Button 
-              variant="link" 
-              onClick={logout} 
+            <Button
+              variant="link"
+              onClick={logout}
               className="text-danger d-flex align-items-center text-decoration-none w-100 py-3 px-3 rounded-lg hover-bg-danger-light transition"
             >
               <FaSignOutAlt className="me-3 fs-5" />

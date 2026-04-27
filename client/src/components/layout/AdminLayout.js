@@ -17,13 +17,13 @@ const Sidebar = ({ logout }) => {
       <div className="p-4 mb-2">
         <h4 className="fw-bold text-primary mb-0">CarePlus <span className="small text-muted fw-normal">Admin</span></h4>
       </div>
-      
+
       <Nav className="flex-column px-3 flex-grow-1">
         {menuItems.map((item) => (
-          <Nav.Link 
-            key={item.path} 
-            as={NavLink} 
-            to={item.path} 
+          <Nav.Link
+            key={item.path}
+            as={NavLink}
+            to={item.path}
             end={item.path === '/admin'}
             className="rounded-lg mb-1 py-3 px-3 d-flex align-items-center transition sidebar-link"
           >
@@ -34,9 +34,9 @@ const Sidebar = ({ logout }) => {
       </Nav>
 
       <div className="p-3 border-top mt-auto">
-        <Button 
-          variant="link" 
-          onClick={logout} 
+        <Button
+          variant="link"
+          onClick={logout}
           className="text-danger d-flex align-items-center text-decoration-none w-100 py-2 px-3 rounded-lg hover-bg-danger-light transition"
         >
           <FaSignOutAlt className="me-3" />

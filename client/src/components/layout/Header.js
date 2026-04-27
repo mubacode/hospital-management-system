@@ -29,15 +29,15 @@ const Header = ({ isAuthenticated, user, logout }) => {
           <FaHospital className="me-2" />
           <span style={{ fontFamily: 'Outfit' }}>CarePlus</span>
         </Navbar.Brand>
-        
+
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        
+
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto align-items-center">
             {isAuthenticated ? (
               <>
                 <Nav.Link as={Link} to={getDashboardLink()} className="px-3 fw-medium">Dashboard</Nav.Link>
-                
+
                 {user.role === 'patient' && (
                   <>
                     <Nav.Link as={Link} to="/patient/appointments/book" className="px-3">Book Appointment</Nav.Link>
@@ -52,13 +52,13 @@ const Header = ({ isAuthenticated, user, logout }) => {
                   </>
                 )}
 
-                <NavDropdown 
+                <NavDropdown
                   title={
                     <span className="d-flex align-items-center">
                       <FaUserCircle className="me-1 fs-5" />
                       {user.first_name || 'Profile'}
                     </span>
-                  } 
+                  }
                   id="user-dropdown"
                   className="ms-2"
                 >
@@ -74,10 +74,10 @@ const Header = ({ isAuthenticated, user, logout }) => {
             ) : (
               <>
                 <Nav.Link as={Link} to="/login" className="px-3 fw-medium">Log In</Nav.Link>
-                <Button 
-                  as={Link} 
-                  to="/register" 
-                  variant="primary" 
+                <Button
+                  as={Link}
+                  to="/register"
+                  variant="primary"
                   className="ms-lg-3 px-4 rounded-pill shadow-sm fw-bold shadow-hover"
                 >
                   Join Us
