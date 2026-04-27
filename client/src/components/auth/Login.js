@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, Container, Row, Col, Alert, InputGroup } from 'react-bootstrap';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { authService } from '../../services/api';
 import { FaUser, FaLock, FaSignInAlt, FaCheckCircle } from 'react-icons/fa';
 
@@ -11,7 +11,6 @@ const Login = ({ login }) => {
   });
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
   const successMessage = location.state?.message;
 

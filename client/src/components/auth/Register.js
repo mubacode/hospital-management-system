@@ -22,7 +22,7 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { email, password, confirmPassword, first_name, last_name, phone, address, role } = formData;
+  const { email, password, confirmPassword, first_name, last_name, phone, address } = formData;
 
   const onChange = e => setFormData({ ...formData, [e.target.name]: e.target.value });
 

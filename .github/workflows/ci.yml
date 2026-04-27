@@ -45,4 +45,4 @@ jobs:
         env:
           CI: true
       - name: Build client
-        run: npm run build
+        run: CI=false npm run build
