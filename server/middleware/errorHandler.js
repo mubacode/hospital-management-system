@@ -15,19 +15,22 @@ const errorHandler = (err, req, res, next) => {
   // Determine status code
   const statusCode = err.statusCode || 500;
   
-  // Create generic response
-  const errorResponse = {
-    error: statusCode === 500 ? 'Internal Server Error' : err.message,
-    requestId: req.requestId
-  };
-
-  // Include error details in development mode
-  if (process.env.NODE_ENV === 'development') {
-    errorResponse.details = err.message;
-    errorResponse.stack = err.stack;
+  // Use the res.error helper (it should be available since middleware was applied)
+  if (res.error) {
+    // In development or non-standard 500s, show the actual message
+    const message = (statusCode === 500 && process.env.NODE_ENV === 'production') 
+      ? 'Internal Server Error' 
+      : err.message;
+      
+    return res.error(message, statusCode);
   }
 
-  res.status(statusCode).json(errorResponse);
+  // Fallback if res.error is not attached
+  res.status(statusCode).json({
+    success: false,
+    error: err.message || 'Internal Server Error',
+    requestId: req.requestId
+  });
 };
 
 module.exports = errorHandler;

@@ -63,7 +63,7 @@ exports.getJobResult = async (req, res, next) => {
       // Job is done, fetch the latest assistant response from the DB for this user
       // Note: We order by created_at DESC to get the last message.
       const [messages] = await db.query(
-        'SELECT content FROM chat_messages WHERE user_id = ? AND role = "assistant" ORDER BY created_at DESC LIMIT 1',
+        "SELECT content FROM chat_messages WHERE user_id = ? AND role = 'assistant' ORDER BY created_at DESC LIMIT 1",
         [String(userId)]
       );
 

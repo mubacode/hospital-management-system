@@ -14,8 +14,13 @@ if (valkeyClient) {
         type: 'exponential',
         delay: 1000
       },
-      removeOnComplete: true,
-      removeOnFail: false
+      removeOnComplete: {
+        age: 3600, // Keep completed jobs for 1 hour
+        count: 1000 // Or keep the last 1000 completed jobs
+      },
+      removeOnFail: {
+        age: 24 * 3600 // Keep failed jobs for 24 hours for debugging
+      }
     }
   };
 

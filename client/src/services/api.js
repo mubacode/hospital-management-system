@@ -21,10 +21,23 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response interceptor: Global error handling (e.g., 401 Unauthorized)
+// Response interceptor: Global error handling and response unwrapping
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // If the response follows our standardized { success, data, requestId } format,
+    // unwrap the data field so components can continue using it directly.
+    if (response.data && response.data.success === true && response.data.hasOwnProperty('data')) {
+      // Preserve the original Axios response structure but update data
+      response.data = response.data.data;
+    }
+    return response;
+  },
   (error) => {
+    // Standardized error unwrapping
+    if (error.response?.data?.success === false && error.response?.data?.error) {
+      error.message = error.response.data.error;
+    }
+
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -93,6 +106,7 @@ export const clinicService = {
 export const chatbotService = {
   sendMessage: (message, contextHint = null) => 
     api.post('/chatbot/message', { message, contextHint }),
+  getResult: (jobId) => api.get(`/chatbot/result/${jobId}`),
 };
 
 export default api;
