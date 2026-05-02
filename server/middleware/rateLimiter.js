@@ -1,5 +1,5 @@
 const { rateLimit, ipKeyGenerator } = require('express-rate-limit');
-const RedisStore = require('rate-limit-redis');
+const RedisStore = require('rate-limit-redis').default;
 const valkeyClient = require('../config/valkey');
 const logger = require('../config/logger');
 
