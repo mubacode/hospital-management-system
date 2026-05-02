@@ -2,7 +2,7 @@ const db = require('../config/db');
 const emailService = require('../config/email');
 
 // Get all appointments (with filters)
-exports.getAppointments = async (req, res) => {
+exports.getAppointments = async (req, res, next) => {
   try {
     const { doctor_id, patient_id, date, status } = req.query;
     let query = `
@@ -62,15 +62,14 @@ exports.getAppointments = async (req, res) => {
     
     const [appointments] = await db.query(query, queryParams);
     
-    res.json(appointments);
+    res.success(appointments);
   } catch (error) {
-    console.error('Error fetching appointments:', error);
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 };
 
 // Get appointment by ID
-exports.getAppointmentById = async (req, res) => {
+exports.getAppointmentById = async (req, res, next) => {
   try {
     const [appointments] = await db.query(
       `SELECT a.*, 
@@ -95,24 +94,23 @@ exports.getAppointmentById = async (req, res) => {
     if (req.user.role === 'patient') {
       const [patientRows] = await db.query('SELECT id FROM patients WHERE user_id = ?', [req.user.id]);
       if (patientRows.length === 0 || patientRows[0].id !== appointment.patient_id) {
-        return res.status(403).json({ message: 'Forbidden: You do not own this appointment' });
+        return res.error('Forbidden: You do not own this appointment', 403);
       }
     } else if (req.user.role === 'doctor') {
       const [doctorRows] = await db.query('SELECT id FROM doctors WHERE user_id = ?', [req.user.id]);
       if (doctorRows.length === 0 || doctorRows[0].id !== appointment.doctor_id) {
-        return res.status(403).json({ message: 'Forbidden: You are not the assigned doctor' });
+        return res.error('Forbidden: You are not the assigned doctor', 403);
       }
     }
     
-    res.json(appointment);
+    res.success(appointment);
   } catch (error) {
-    console.error('Error fetching appointment:', error);
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 };
 
 // Create new appointment
-exports.createAppointment = async (req, res) => {
+exports.createAppointment = async (req, res, next) => {
   try {
     const { doctorId, clinicId, date, time, reason, notes, patientUserId } = req.body;
     const isReceptionist = req.user.role === 'receptionist';
@@ -123,20 +121,20 @@ exports.createAppointment = async (req, res) => {
     // 2. Resolve Patient Profile ID (Source of truth for appointments table)
     const [patients] = await db.query('SELECT id, first_name, last_name FROM patients WHERE user_id = ?', [targetUserId]);
     if (patients.length === 0) {
-      return res.status(404).json({ message: 'Patient record not found for this user.' });
+      return res.error('Patient record not found for this user.', 404);
     }
     const patient = patients[0];
 
     // 3. Basic Validation
     if (!clinicId || !date || !time || !reason) {
-      return res.status(400).json({ message: 'Required fields missing' });
+      return res.error('Required fields missing', 400);
     }
 
     const selectedDate = new Date(date);
     const today = new Date();
     today.setHours(0,0,0,0);
     if (selectedDate < today) {
-      return res.status(400).json({ message: 'Cannot book appointments for past dates' });
+      return res.error('Cannot book appointments for past dates', 400);
     }
 
     // 4. Normalize Time
@@ -163,14 +161,14 @@ exports.createAppointment = async (req, res) => {
           `SELECT id FROM appointments
            WHERE doctor_id = ? AND appointment_date = ?
              AND TIME_FORMAT(appointment_time,'%H:%i') = TIME_FORMAT(?,'%H:%i')
-             AND status NOT IN ('cancelled','no-show')`,
+             AND status NOT IN ('cancelled','no-show') FOR UPDATE`,
           [doctorId, date, formattedTime]
         );
 
         if (conflict.length > 0) {
           await conn.rollback();
           conn.release();
-          return res.status(409).json({ message: 'This time slot is already booked.' });
+          return res.error('This time slot is already booked.', 409);
         }
       }
 
@@ -195,10 +193,10 @@ exports.createAppointment = async (req, res) => {
         }
       }
 
-      return res.status(201).json({
+      return res.success({
         message: doctorId ? 'Appointment created successfully' : 'Appointment request submitted. A doctor will be assigned soon.',
         id: result.insertId
-      });
+      }, 201);
 
     } catch (txErr) {
       await conn.rollback().catch(() => {});
@@ -206,25 +204,24 @@ exports.createAppointment = async (req, res) => {
       throw txErr;
     }
   } catch (error) {
-    console.error('Error creating appointment:', error);
-    return res.status(500).json({ message: 'Error creating appointment', error: error.message });
+    next(error);
   }
 };
 
 // Update appointment status
-exports.updateAppointmentStatus = async (req, res) => {
+exports.updateAppointmentStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, notes, doctorId, date, time } = req.body;
     
     if (!status) {
-      return res.status(400).json({ message: 'Status is required' });
+      return res.error('Status is required', 400);
     }
     
     // Add "confirmed" and "pending_assignment" to valid statuses
     const validStatuses = ['scheduled', 'completed', 'cancelled', 'no-show', 'pending', 'confirmed', 'pending_assignment', 'in-progress'];
     if (!validStatuses.includes(status)) {
-      return res.status(400).json({ message: 'Invalid status value' });
+      return res.error('Invalid status value', 400);
     }
     
     // Get appointment details
@@ -270,7 +267,7 @@ exports.updateAppointmentStatus = async (req, res) => {
       `, [doctorId]);
       
       if (doctors.length === 0) {
-        return res.status(404).json({ message: 'Doctor not found' });
+        return res.error('Doctor not found', 404);
       }
       
       const doctor = doctors[0];
@@ -472,7 +469,7 @@ exports.updateAppointmentStatus = async (req, res) => {
       }
     }
     
-    res.json({ 
+    res.success({ 
       message: 'Appointment status updated successfully',
       appointment: {
         id,
@@ -481,13 +478,12 @@ exports.updateAppointmentStatus = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Error updating appointment:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    next(error);
   }
 };
 
 // Delete appointment
-exports.deleteAppointment = async (req, res) => {
+exports.deleteAppointment = async (req, res, next) => {
   try {
     const { id } = req.params;
     
@@ -498,15 +494,14 @@ exports.deleteAppointment = async (req, res) => {
     
     await db.query('DELETE FROM appointments WHERE id = ?', [id]);
     
-    res.json({ message: 'Appointment deleted successfully' });
+    res.success({ message: 'Appointment deleted successfully' });
   } catch (error) {
-    console.error('Error deleting appointment:', error);
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 };
 
 // Get analytics for admin dashboard
-exports.getAnalytics = async (req, res) => {
+exports.getAnalytics = async (req, res, next) => {
   try {
     // Status breakdown
     const [statusRows] = await db.query(
@@ -554,7 +549,7 @@ exports.getAnalytics = async (req, res) => {
       upcoming: Number(d.upcoming)
     }));
 
-    res.json({
+    res.success({
       total: Number(totalAll),
       scheduled: (statusMap['scheduled'] || 0) + (statusMap['confirmed'] || 0),
       completed: statusMap['completed'] || 0,
@@ -564,8 +559,7 @@ exports.getAnalytics = async (req, res) => {
       daily: daily.map(d => ({ ...d, total: Number(d.total) })),
     });
   } catch (error) {
-    console.error('Analytics error:', error);
-    res.status(500).json({ message: 'Server error' });
+    next(error);
   }
 };
  

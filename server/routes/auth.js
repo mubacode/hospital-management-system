@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { authenticateToken } = require('../middleware/auth');
+const { loginLimiter } = require('../middleware/rateLimiter');
 
 // Send verification code for email
 router.post('/send-verification-code', authController.sendVerificationCode);
@@ -13,7 +14,7 @@ router.post('/verify-code', authController.verifyCode);
 router.post('/register', authController.register);
 
 // Login user
-router.post('/login', authController.login);
+router.post('/login', loginLimiter, authController.login);
 
 // Get user profile (protected route)
 router.get('/profile', authenticateToken, authController.getProfile);

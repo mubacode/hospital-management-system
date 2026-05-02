@@ -1,7 +1,11 @@
+const path = require('path');
+const dotenv = require('dotenv');
+
+// Load environment variables with explicit path before anything else
+dotenv.config({ path: path.resolve(__dirname, '.env') });
+
 const express = require('express');
 const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
 const authRoutes = require('./routes/auth');
 const appointmentRoutes = require('./routes/appointments');
 const usersRoutes = require('./routes/users');
@@ -16,9 +20,9 @@ const chatbotRoutes = require('./routes/chatbot');
 const logger = require('./config/logger');
 const { assignRequestId, requestLogger } = require('./middleware/requestLogger');
 const errorHandler = require('./middleware/errorHandler');
-
-// Load environment variables with explicit path
-dotenv.config({ path: path.resolve(__dirname, '.env') });
+const responseHelpers = require('./middleware/responseHelpers');
+const db = require('./config/db');
+const valkeyClient = require('./config/valkey');
 
 // Initialize express app
 const app = express();
@@ -39,6 +43,38 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(assignRequestId);
 app.use(requestLogger);
+app.use(responseHelpers);
+
+// Health check endpoint
+app.get('/health', async (req, res) => {
+  const health = {
+    status: 'ok',
+    services: {
+      db: 'down',
+      valkey: valkeyClient ? 'up' : 'disabled'
+    }
+  };
+
+  try {
+    await db.query('SELECT 1');
+    health.services.db = 'up';
+  } catch (error) {
+    logger.error('Database health check failed', { error: error.message });
+    health.status = 'degraded';
+  }
+
+  if (valkeyClient) {
+    try {
+      await valkeyClient.ping();
+    } catch (error) {
+      logger.error('Valkey health check failed', { error: error.message });
+      health.services.valkey = 'down';
+      health.status = 'degraded';
+    }
+  }
+
+  res.json(health);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -59,6 +95,10 @@ app.get('/', (req, res) => {
 
 // Global Error Handler
 app.use(errorHandler);
+
+// Initialize background workers
+require('./workers/emailWorker');
+require('./workers/chatbotWorker');
 
 // Start the server
 const server = app.listen(PORT, () => {

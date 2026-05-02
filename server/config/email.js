@@ -165,142 +165,84 @@ const getAppointmentCancellationEmailTemplate = (patientName, date, time, clinic
   `;
 };
 
+// Import the email queue
+const { emailQueue } = require('../queues');
+const logger = require('./logger');
+
+const enqueueEmailJob = async (type, payload) => {
+  if (!emailQueue) {
+    logger.warn('Email queue not available. Skipping email:', { type });
+    return false;
+  }
+  
+  try {
+    const job = await emailQueue.add(type, { type, payload });
+    logger.info('Email job enqueued', { event: 'job_enqueued', jobId: job.id, type });
+    return true;
+  } catch (error) {
+    logger.error('Failed to enqueue email job', { error: error.message });
+    return false;
+  }
+};
+
 // Email sending functions
 const sendVerificationEmail = async (email, verificationCode) => {
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('verification', {
     to: email,
     subject: 'Email Verification - Hospital Management System',
     html: getVerificationEmailTemplate(verificationCode)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Verification email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending verification email:', error);
-    return false;
-  }
+  });
 };
 
 const sendInvitationEmail = async (email, name, role, setupLink) => {
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('invitation', {
     to: email,
     subject: `Portal Invitation: Join CarePlus as ${role}`,
     html: getInvitationTemplate(name, role, setupLink)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Invitation email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending invitation email:', error);
-    return false;
-  }
+  });
 };
 
 const sendAppointmentPendingEmail = async (patientEmail, patientName, date, time, clinic) => {
-  console.log(`Preparing to send pending email to: ${patientEmail} for patient: ${patientName}`);
-
-  if (!patientEmail) {
-    console.error('Cannot send email: patientEmail is empty or undefined');
-    return false;
-  }
-
-  const mailOptions = {
-    from: SMTP_USER,
+  if (!patientEmail) return false;
+  return enqueueEmailJob('appointment_pending', {
     to: patientEmail,
     subject: 'Appointment Request Received - Hospital Management System',
     html: getAppointmentPendingEmailTemplate(patientName, date, time, clinic)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Appointment pending email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending appointment pending email:', error);
-    return false;
-  }
+  });
 };
 
 const sendAppointmentConfirmationEmail = async (patientEmail, patientName, doctorName, date, time, clinic, isReschedule = false) => {
   if (!patientEmail) return false;
-
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('appointment_confirmation', {
     to: patientEmail,
     subject: isReschedule ? 'Appointment Rescheduled - Hospital Management System' : 'Appointment Confirmed - Hospital Management System',
     html: getAppointmentConfirmationEmailTemplate(patientName || "Patient", doctorName, date, time, clinic, isReschedule)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Appointment confirmation email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending appointment confirmation email:', error);
-    return false;
-  }
+  });
 };
 
 const sendDoctorNewAppointmentEmail = async (doctorEmail, doctorName, patientName, date, time) => {
   if (!doctorEmail) return false;
-
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('doctor_new_appointment', {
     to: doctorEmail,
     subject: 'New Appointment Scheduled - Hospital Management System',
     html: getDoctorNewAppointmentEmailTemplate(doctorName || "Doctor", patientName, date, time)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Doctor new appointment email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending doctor new appointment email:', error);
-    return false;
-  }
+  });
 };
 
 const sendReceptionistNewAppointmentEmail = async (receptionistEmail, patientName, date, time, clinic) => {
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('receptionist_new_appointment', {
     to: receptionistEmail,
     subject: 'New Appointment Requires Assignment - Hospital Management System',
     html: getReceptionistNewAppointmentEmailTemplate(patientName, date, time, clinic)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Receptionist new appointment email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending receptionist new appointment email:', error);
-    return false;
-  }
+  });
 };
 
 const sendAppointmentCancellationEmail = async (patientEmail, patientName, date, time, clinic, reason) => {
-  const mailOptions = {
-    from: SMTP_USER,
+  return enqueueEmailJob('appointment_cancellation', {
     to: patientEmail,
     subject: 'Appointment Cancelled - Hospital Management System',
     html: getAppointmentCancellationEmailTemplate(patientName, date, time, clinic, reason)
-  };
-
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Cancellation email sent: %s', info.messageId);
-    return true;
-  } catch (error) {
-    console.error('Error sending cancellation email:', error);
-    return false;
-  }
+  });
 };
 
 module.exports = {
