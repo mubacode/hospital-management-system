@@ -13,6 +13,9 @@ const medicalRecordsRoutes = require('./routes/medical-records');
 const patientsRoutes = require('./routes/patients');
 const chatbotRoutes = require('./routes/chatbot');
 
+const logger = require('./config/logger');
+const { assignRequestId, requestLogger } = require('./middleware/requestLogger');
+const errorHandler = require('./middleware/errorHandler');
 
 // Load environment variables with explicit path
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -22,17 +25,20 @@ const app = express();
 const PORT = process.env.PORT;
 
 // Debug environment variables
-console.log('Environment variables loaded:');
-console.log('PORT:', process.env.PORT);
-console.log('SMTP_USER:', process.env.SMTP_USER);
-console.log('SMTP_PASS length:', process.env.SMTP_PASS ? process.env.SMTP_PASS.length : 0);
-console.log('OPENROUTER_API_KEY present:', !!process.env.OPENROUTER_API_KEY);
-console.log('GEMINI_API_KEY present:', !!process.env.GEMINI_API_KEY);
+logger.info('Environment variables loaded:', {
+  PORT: process.env.PORT,
+  SMTP_USER: process.env.SMTP_USER,
+  SMTP_PASS_LENGTH: process.env.SMTP_PASS ? process.env.SMTP_PASS.length : 0,
+  OPENROUTER_API_KEY_PRESENT: !!process.env.OPENROUTER_API_KEY,
+  GEMINI_API_KEY_PRESENT: !!process.env.GEMINI_API_KEY
+});
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(assignRequestId);
+app.use(requestLogger);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -51,9 +57,28 @@ app.get('/', (req, res) => {
   res.send('Hospital Management System API');
 });
 
+// Global Error Handler
+app.use(errorHandler);
+
 // Start the server
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+const server = app.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
 });
+
+// Handle uncaught exceptions and unhandled rejections
+const shutdown = (err, type) => {
+  logger.error(`${type} occurred`, { stack: err ? err.stack : undefined, details: err ? (err.message || err) : undefined });
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed');
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+};
+
+process.on('uncaughtException', (err) => shutdown(err, 'Uncaught Exception'));
+process.on('unhandledRejection', (reason) => shutdown(reason, 'Unhandled Rejection'));
 
 module.exports = app; 
