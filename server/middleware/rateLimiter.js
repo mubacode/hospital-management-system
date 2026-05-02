@@ -3,20 +3,21 @@ const RedisStore = require('rate-limit-redis').default;
 const valkeyClient = require('../config/valkey');
 const logger = require('../config/logger');
 
-// Fallback to memory store if Valkey is unavailable
-let store;
-if (valkeyClient) {
-  store = new RedisStore({
-    sendCommand: (...args) => valkeyClient.call(...args)
+// Helper to create a new RedisStore instance
+const createStore = (prefix) => {
+  if (!valkeyClient) return undefined;
+  return new RedisStore({
+    sendCommand: (...args) => valkeyClient.call(...args),
+    prefix: `rl:${prefix}:`
   });
-}
+};
 
 const loginLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 5, // Limit each IP to 5 login requests per `window`
   standardHeaders: true,
   legacyHeaders: false,
-  store: store, // Defaults to memory if store is undefined
+  store: createStore('login'),
   handler: (req, res, next, options) => {
     logger.warn('Rate limit exceeded', {
       event: 'rate_limit_exceeded',
@@ -37,7 +38,7 @@ const chatbotLimiter = rateLimit({
   max: 10, // Limit each IP/user to 10 requests per `window`
   standardHeaders: true,
   legacyHeaders: false,
-  store: store,
+  store: createStore('chatbot'),
   keyGenerator: (req, res) => {
     // Rate limit by user ID if authenticated, otherwise by IP
     return req.user ? String(req.user.id) : ipKeyGenerator(req, res);

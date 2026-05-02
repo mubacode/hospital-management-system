@@ -60,7 +60,7 @@ const emailWorker = valkeyClient ? new Worker('email-queue', async (job) => {
     });
     throw error; // Let BullMQ handle retries
   }
-}, { connection: redisClient }) : null;
+}, { connection: valkeyClient }) : null;
 
 if (emailWorker) {
   emailWorker.on('error', err => {

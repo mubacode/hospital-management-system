@@ -199,7 +199,7 @@ const chatbotWorker = valkeyClient ? new Worker('chatbot-queue', async (job) => 
   });
 
   return { success: true };
-}, { connection: redisClient }) : null;
+}, { connection: valkeyClient }) : null;
 
 if (chatbotWorker) {
   chatbotWorker.on('error', err => {
