@@ -11,17 +11,20 @@ const assignRequestId = (req, res, next) => {
 // Morgan custom format to output JSON string
 morgan.token('requestId', (req) => req.requestId);
 morgan.token('userId', (req) => (req.user ? req.user.id : 'unauthenticated'));
-morgan.token('body', (req) => {
-  // Avoid logging sensitive information like passwords
-  const body = { ...req.body };
-  if (body.password) body.password = '[REDACTED]';
-  return Object.keys(body).length ? JSON.stringify(body) : undefined;
-});
-morgan.token('query', (req) => {
-  return Object.keys(req.query).length ? JSON.stringify(req.query) : undefined;
-});
 
 const morganFormat = (tokens, req, res) => {
+  const sanitizeBody = (body) => {
+    if (!body || Object.keys(body).length === 0) return undefined;
+    const safeBody = {};
+    const safeKeys = ['clinicId', 'doctorId', 'date', 'time', 'appointmentId'];
+    safeKeys.forEach(k => {
+      if (body[k]) safeBody[k] = body[k];
+    });
+    if (body.message) safeBody.message_length = body.message.length;
+    if (body.reason) safeBody.reason_length = body.reason.length;
+    return Object.keys(safeBody).length ? safeBody : { _redacted: true };
+  };
+
   return JSON.stringify({
     method: tokens.method(req, res),
     url: tokens.url(req, res),
@@ -32,8 +35,8 @@ const morganFormat = (tokens, req, res) => {
     userId: tokens.userId(req, res),
     ip: tokens['remote-addr'](req, res),
     user_agent: tokens['user-agent'](req, res),
-    query: tokens.query(req, res),
-    body: tokens.body(req, res)
+    query: req.query && Object.keys(req.query).length ? req.query : undefined,
+    body: sanitizeBody(req.body)
   });
 };
 

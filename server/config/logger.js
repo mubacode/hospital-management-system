@@ -16,8 +16,9 @@ const isTest = process.env.NODE_ENV === 'test';
 const consoleFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-  winston.format.printf(({ timestamp, level, message, stack, requestId, userId, ...meta }) => {
+  winston.format.printf(({ timestamp, level, message, stack, requestId, userId, event, ...meta }) => {
     let output = `[${timestamp}] ${level}: ${message}`;
+    if (event) output += ` [event:${event}]`;
     if (requestId) output += ` [req:${requestId}]`;
     if (userId) output += ` [user:${userId}]`;
     if (Object.keys(meta).length) output += `\n${JSON.stringify(meta, null, 2)}`;
@@ -81,8 +82,13 @@ const logger = winston.createLogger({
 // Stream for morgan
 logger.stream = {
   write: (message) => {
-    // Morgan adds a newline character to the end of the message, remove it
-    logger.info(message.trim());
+    try {
+      const data = JSON.parse(message.trim());
+      const msg = `${data.method} ${data.url} ${data.status} - ${data.response_time}ms`;
+      logger.info(msg, { event: 'http_request', ...data });
+    } catch (e) {
+      logger.info(message.trim());
+    }
   }
 };
 

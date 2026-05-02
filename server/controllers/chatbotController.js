@@ -1,5 +1,6 @@
 const OpenAI = require('openai');
 const db = require('../config/db');
+const logger = require('../config/logger');
 
 // Initialize OpenRouter Client
 const openai = new OpenAI({
@@ -130,7 +131,12 @@ exports.processMessage = async (req, res) => {
     const userId = req.user?.id || 'anonymous';
     const { message } = req.body;
     
-    console.log(`[Chatbot] Request from User ID: ${userId}, Message: "${message}"`);
+    logger.info('Chatbot request received', {
+      event: 'chatbot_request',
+      userId,
+      requestId: req.requestId,
+      chatbot_message_length: message ? message.length : 0
+    });
 
     if (!activeChats[userId]) {
       activeChats[userId] = [
@@ -153,7 +159,12 @@ exports.processMessage = async (req, res) => {
         tools: tools,
       };
 
-      console.log(`[Chatbot] Sending request to OpenRouter using model: ${requestPayload.model}`);
+      logger.info('Sending request to OpenRouter', {
+        event: 'openrouter_api_request',
+        userId,
+        requestId: req.requestId,
+        model: requestPayload.model
+      });
       const response = await openai.chat.completions.create(requestPayload);
       const responseMessage = response.choices[0].message;
       
@@ -178,12 +189,23 @@ exports.processMessage = async (req, res) => {
       if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
         // Execute tools
         for (const call of responseMessage.tool_calls) {
-          console.log(`[OpenRouter OSS] Executing Tool: ${call.function.name}`, call.function.arguments);
+          logger.info('Executing Chatbot Tool', {
+            event: 'chatbot_tool_execution',
+            userId,
+            requestId: req.requestId,
+            tool_name: call.function.name,
+            arguments: call.function.arguments
+          });
           let args = {};
           try {
             args = JSON.parse(call.function.arguments);
           } catch (e) {
-            console.error('JSON parse error on arguments', e);
+            logger.error('JSON parse error on arguments', {
+              event: 'chatbot_tool_error',
+              userId,
+              requestId: req.requestId,
+              error: e.message
+            });
           }
           
           const toolResult = await executeTool(call.function.name, args, userId);
@@ -206,13 +228,14 @@ exports.processMessage = async (req, res) => {
     return res.json({ text: finalContent, resetSession: false });
 
   } catch (error) {
-    console.error('--- CHATBOT CONTROLLER ERROR ---');
-    console.error('Status:', error.status);
-    console.error('Message:', error.message);
-    if (error.response) {
-      console.error('Response Data:', JSON.stringify(error.response.data, null, 2));
-    }
-    console.error('--------------------------------');
+    logger.error('Chatbot Controller Error', {
+      event: 'chatbot_error',
+      userId: req.user ? req.user.id : 'anonymous',
+      requestId: req.requestId,
+      status: error.status,
+      error_message: error.message,
+      response_data: error.response ? error.response.data : undefined
+    });
     
     let errorMsg = 'A technical error occurred with the AI agent. Please try again.';
     if (error.status === 429) {
@@ -312,7 +335,7 @@ async function executeTool(name, args, userId) {
         return { error: 'Unknown tool' };
     }
   } catch(err) {
-    console.error('Tool exec error:', err);
+    logger.error('Tool exec error', { event: 'chatbot_tool_error', userId, error: err.message, stack: err.stack });
     return { error: err.message };
   }
 }
