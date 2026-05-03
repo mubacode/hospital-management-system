@@ -1,5 +1,6 @@
 const db = require('../config/db');
 const emailService = require('../config/email');
+const { logAudit } = require('../middleware/auditLogger');
 
 // Get all appointments (with filters)
 exports.getAppointments = async (req, res, next) => {
@@ -192,6 +193,10 @@ exports.createAppointment = async (req, res, next) => {
           emailService.sendDoctorNewAppointmentEmail(doctorRows[0].email, `Dr. ${doctorRows[0].first_name}`, `${patient.first_name} ${patient.last_name}`, date, time).catch(console.error);
         }
       }
+
+      logAudit(req, 'APPOINTMENT_CREATED', 'appointment', result.insertId, {
+        doctorId, clinicId, date, time, patientId: patient.id
+      });
 
       return res.success({
         message: doctorId ? 'Appointment created successfully' : 'Appointment request submitted. A doctor will be assigned soon.',
@@ -469,6 +474,12 @@ exports.updateAppointmentStatus = async (req, res, next) => {
       }
     }
     
+    logAudit(req, `APPOINTMENT_${status.toUpperCase()}`, 'appointment', id, {
+      previousStatus: appointment.status,
+      newStatus: status,
+      doctorId: doctorId || appointment.doctor_id
+    });
+
     res.success({ 
       message: 'Appointment status updated successfully',
       appointment: {

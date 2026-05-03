@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './i18n';
+import { connectSocket, disconnectSocket } from './services/socketService';
 
 // Auth
 import Login from './components/auth/Login';
@@ -90,6 +91,8 @@ function App() {
         try {
           setIsAuthenticated(true);
           setUser(JSON.parse(userData));
+          // Reconnect WebSocket on page refresh
+          connectSocket();
         } catch {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
@@ -104,9 +107,13 @@ function App() {
     localStorage.setItem('user', JSON.stringify(userData));
     setIsAuthenticated(true);
     setUser(userData);
+    // Initialize WebSocket connection after login
+    connectSocket();
   }, []);
 
   const logout = useCallback(() => {
+    // Disconnect WebSocket before clearing auth
+    disconnectSocket();
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     localStorage.removeItem('lastActivity');

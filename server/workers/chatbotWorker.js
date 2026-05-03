@@ -3,6 +3,7 @@ const OpenAI = require('openai');
 const valkeyClient = require('../config/valkey');
 const db = require('../config/db');
 const logger = require('../config/logger');
+const { buildEvent, EVENTS } = require('../utils/eventSchema');
 
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 
@@ -189,6 +190,22 @@ const chatbotWorker = valkeyClient ? new Worker('chatbot-queue', async (job) => 
     'INSERT INTO chat_messages (user_id, role, content) VALUES (?, ?, ?)',
     [String(userId), 'assistant', finalContent]
   );
+
+  // Emit event via Redis pub/sub for Socket.io delivery
+  if (valkeyClient) {
+    try {
+      const publisher = valkeyClient.duplicate();
+      const socketEvent = buildEvent(EVENTS.CHATBOT_RESPONSE, userId, {
+        jobId: job.id,
+        text: finalContent
+      }, requestId);
+      await publisher.publish('socket_events', JSON.stringify(socketEvent));
+      publisher.disconnect();
+    } catch (pubErr) {
+      // Non-blocking: if socket delivery fails, client falls back to polling
+      logger.warn('Failed to publish socket event', { error: pubErr.message });
+    }
+  }
   
   logger.info('Chatbot job completed successfully', {
     event: 'job_completed',

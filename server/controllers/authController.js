@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const db = require('../config/db');
 const emailService = require('../config/email');
+const { logAudit } = require('../middleware/auditLogger');
 
 // Store verification codes temporarily (in a real app, use Redis or a database)
 const verificationCodes = {};
@@ -160,6 +161,9 @@ exports.register = async (req, res) => {
       );
 
       await db.query('COMMIT');
+
+      logAudit(req, 'USER_REGISTERED', 'user', userId, { role, username, email }, 'success');
+
       res.success({
         message: 'User registered successfully',
         token,
@@ -188,11 +192,17 @@ exports.login = async (req, res) => {
       [username, username]
     );
 
-    if (users.length === 0) return res.error('Invalid credentials', 401);
+    if (users.length === 0) {
+      logAudit(req, 'LOGIN_FAILED', 'user', null, { username, reason: 'user_not_found' }, 'failure');
+      return res.error('Invalid credentials', 401);
+    }
 
     const user = users[0];
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) return res.error('Invalid credentials', 401);
+    if (!isPasswordValid) {
+      logAudit(req, 'LOGIN_FAILED', 'user', user.id, { username, reason: 'invalid_password' }, 'failure');
+      return res.error('Invalid credentials', 401);
+    }
 
     const token = jwt.sign(
       { id: user.id, username: user.username, email: user.email, role: user.role },
@@ -205,6 +215,8 @@ exports.login = async (req, res) => {
       const [doctors] = await db.query('SELECT id FROM doctors WHERE user_id = ?', [user.id]);
       if (doctors.length > 0) doctorId = doctors[0].id;
     }
+
+    logAudit(req, 'LOGIN_SUCCESS', 'user', user.id, { role: user.role }, 'success');
 
     res.success({
       token,

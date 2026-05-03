@@ -180,16 +180,27 @@ toc_items = [
     ('  5.4', 'Kimlik Doğrulama Denetleyicisi'),
     ('  5.5', 'Randevu Denetleyicisi'),
     ('  5.6', 'E-posta Bildirim Servisi'),
+    ('  5.7', 'Sistem Gözlemlenebilirliği ve İzleme'),
+    ('  5.8', 'Zarif Kapatma (Graceful Shutdown)'),
     ('6.', 'Ön Uç (Frontend) Gerçekleştirimi'),
     ('  6.1', 'Uygulama Yönlendirmesi (App.js)'),
     ('  6.2', 'API Servis Katmanı'),
+    ('  6.3', 'Gerçek Zamanlı İletişim (WebSocket)'),
     ('7.', 'Yapay Zekâ Chatbot Entegrasyonu'),
     ('  7.1', 'Chatbot Denetleyicisi - Arka Uç'),
     ('  7.2', 'ChatAssistant - Ön Uç Arayüzü'),
     ('  7.3', 'Araç/Fonksiyon Çağırma Mimarisi'),
-    ('8.', 'Güvenlik Özellikleri'),
-    ('9.', 'API Uç Noktaları Referansı'),
-    ('10.', 'Sonuç'),
+    ('8.', 'Asenkron İşlem Mimarisi'),
+    ('  8.1', 'BullMQ Kuyruk Sistemi'),
+    ('  8.2', 'Arka Plan İşçileri (Workers)'),
+    ('9.', 'Gerçek Zamanlı WebSocket Bildirimleri'),
+    ('10.', 'Yapısal Loglama ve Denetim Sistemi'),
+    ('  10.1', 'Winston Yapısal Loglama'),
+    ('  10.2', 'Denetim Günlüğü (Audit Log)'),
+    ('11.', 'Hız Sınırlama ve Güvenlik'),
+    ('12.', 'Dağıtık Sistem Davranışı'),
+    ('13.', 'API Uç Noktaları Referansı'),
+    ('14.', 'Sonuç'),
 ]
 
 for num, item in toc_items:
@@ -232,6 +243,10 @@ features = [
     ('Gerçek Zamanlı Analitik: ', 'Randevu istatistikleri, doktor bazlı dağılım ve günlük trend grafikleri içeren yönetici kontrol paneli.'),
     ('Uluslararasılaştırma: ', 'i18next framework kullanılarak çoklu dil desteği.'),
     ('Güvenlik: ', 'JWT kimlik doğrulama, bcrypt şifre karması, rol tabanlı rota koruması ve SQL enjeksiyon önleme.'),
+    ('Asenkron İşlem Mimarisi: ', 'BullMQ ve Valkey (Redis) kullanılarak ağır görevlerin arka planda işlendiği ölçeklenebilir yapı.'),
+    ('Gerçek Zamanlı Bildirimler: ', 'Socket.io ve Redis Adapter ile dağıtık sistemlerde anlık veri iletimi.'),
+    ('Gelişmiş Gözlemlenebilirlik: ', 'Winston yapısal loglama, RequestID izleme ve Bull-Board kuyruk izleme paneli.'),
+    ('Denetim ve Güvenlik: ', 'Redis tabanlı hız sınırlama (Rate Limiting) ve tüm kritik işlemler için Audit Log sistemi.'),
 ]
 for prefix, text in features:
     add_bullet(text, prefix)
@@ -251,12 +266,14 @@ doc.add_paragraph(
 doc.add_heading('Mimari Genel Bakışı', level=2)
 
 arch_data = [
-    ('Sunum Katmanı', 'React.js 18 SPA, Bootstrap Arayüzü - Port 3000'),
-    ('API Katmanı', 'Express.js REST API, JWT kimlik doğrulama ara yazılımı - Port 5000'),
-    ('İş Mantığı', '9 Denetleyici: Auth, Appointments, Chatbot, Doctors, Clinics, Users, Messages, Notifications, Medical Records'),
-    ('Yapay Zekâ Katmanı', 'OpenRouter LLM API (120B Açık Kaynak model) ile 7 Fonksiyon Aracı'),
-    ('E-posta Servisi', 'Nodemailer ile Gmail SMTP - 7 e-posta şablon türü'),
-    ('Veri Katmanı', 'MySQL, Bağlantı Havuzu (10 bağlantı) - Parametreli Sorgular'),
+    ('Sunum Katmanı', 'React.js 18 SPA, WebSocket İstemcisi - Port 3000'),
+    ('API Katmanı', 'Express.js REST API + Socket.io (HTTP/WS Sunucusu) - Port 5000'),
+    ('Asenkron Katman', 'BullMQ Workers (Email & Chatbot işleme), Valkey (Redis) Veri Deposu'),
+    ('İş Mantığı', '10+ Denetleyici: Auth, Appointments, Chatbot, Doctors, Clinics, Users vb.'),
+    ('Yapay Zekâ Katmanı', 'OpenRouter LLM API (120B model) ile Çok Adımlı Araç Zincirleme'),
+    ('E-posta Servisi', 'Nodemailer (Gmail SMTP) - Arka plan kuyruğu üzerinden gönderim'),
+    ('İzleme ve Denetim', 'Winston Yapısal Loglama, Audit Log Tablosu, Bull-Board Dashboard'),
+    ('Veri Katmanı', 'MySQL Bağlantı Havuzu (10 bağlantı) - ACID uyumlu işlemler'),
 ]
 add_key_value_table(arch_data, 'Katman', 'Teknoloji ve Detaylar')
 
@@ -284,22 +301,29 @@ add_code_block('''online-hospital-system/
 |-- server/                          # Node.js Arka Uç
 |   |-- config/
 |   |   |-- db.js                    # MySQL bağlantı havuzu
-|   |   |-- email.js                 # Nodemailer e-posta servisi (7 şablon)
+|   |   |-- email.js                 # Nodemailer e-posta servisi
+|   |   |-- valkey.js                # Valkey (Redis) istemcisi
+|   |   |-- socket.js                # Socket.io yapılandırması [YENİ]
+|   |   |-- bullBoard.js             # Kuyruk izleme paneli [YENİ]
+|   |   |-- logger.js                # Yapısal Winston loglayıcı
 |   |-- controllers/
-|   |   |-- authController.js        # Kayıt, giriş, davet sistemi
-|   |   |-- appointmentsController.js # CRUD + analitik + çakışma algılama
-|   |   |-- chatbotController.js     # Yapay Zekâ LLM entegrasyonu, 7 araç
-|   |   |-- clinicsController.js     # Bölüm yönetimi
-|   |   |-- doctorsController.js     # Doktor sorguları
-|   |   |-- usersController.js       # Kullanıcı yönetimi (yönetici)
-|   |   |-- messagesController.js    # Mesajlaşma sistemi
-|   |   |-- notificationsController.js # Bildirim yönetimi
-|   |   |-- medicalRecordsController.js # Tıbbi kayıtlar
+|   |   |-- authController.js        # Kayıt, giriş, denetim günlüğü
+|   |   |-- chatbotController.js     # Asenkron iş kuyruğu yönetimi
 |   |-- middleware/
-|   |   |-- auth.js                  # JWT doğrulama + rol tabanlı yetkilendirme
-|   |-- routes/                      # 10 Express rota dosyası
-|   |-- seeder.js                    # Veritabanı tohumlayıcı (klinikler + 30 doktor)
-|   |-- index.js                     # Express sunucu giriş noktası
+|   |   |-- auth.js                  # JWT & Rol doğrulama
+|   |   |-- auditLogger.js           # İşlem denetim günlüğü [YENİ]
+|   |   |-- requestLogger.js         # HTTP istek izleme (requestId)
+|   |-- queues/                      # BullMQ kuyruk tanımları [YENİ]
+|   |   |-- index.js                 # Chatbot ve Email kuyrukları
+|   |-- workers/                     # Arka plan işçileri [YENİ]
+|   |   |-- chatbotWorker.js         # Yapay Zekâ işleme & Soket iletimi
+|   |   |-- emailWorker.js           # E-posta gönderim işçisi
+|   |-- utils/
+|   |   |-- eventSchema.js           # Standart olay şeması [YENİ]
+|   |-- scripts/
+|   |   |-- create-audit-log.js      # Denetim tablosu migrasyonu
+|   |   |-- create-chat-messages.js  # Chat tablosu migrasyonu
+|   |-- index.js                     # HTTP + WebSocket sunucu girişi
 |   |-- .env                         # Ortam değişkenleri''', "Şekil 2.1 - Tam Proje Dosya Yapısı")
 
 doc.add_page_break()
@@ -330,6 +354,11 @@ add_key_value_table([
     ('E-posta Servisi', 'Nodemailer 7.0 (Gmail SMTP)'),
     ('Yapay Zekâ/LLM Entegrasyonu', 'OpenAI SDK 6.34 -> OpenRouter API'),
     ('LLM Modeli', 'openai/gpt-oss-120b:free (120 Milyar parametreli açık kaynak model)'),
+    ('Mesaj Kuyruğu', 'BullMQ 5.76 + ioredis 5.10 (Valkey/Redis)'),
+    ('Gerçek Zamanlı İletişim', 'Socket.io 4 + Redis Adapter'),
+    ('Yapısal Loglama', 'Winston 3.19 + Daily Rotate File'),
+    ('Hız Sınırlama', 'express-rate-limit 8.4 + rate-limit-redis 4.3'),
+    ('Kuyruk İzleme', '@bull-board/express (Yönetici Paneli)'),
     ('Ortam Yapılandırması', 'dotenv 16.5'),
     ('Geliştirme Sunucusu', 'Nodemon 3.1'),
 ])
@@ -360,6 +389,8 @@ add_key_value_table([
     ('appointments', 'id, patient_id (FK->patients), doctor_id (FK->doctors), clinic_id (FK->clinics), appointment_date, appointment_time, reason, notes, status'),
     ('notifications', 'id, user_id (FK->users), message, type, related_id'),
     ('receptionists', 'id, user_id (FK->users), first_name, last_name'),
+    ('audit_logs', 'id, user_id (FK->users), action, entity_type, entity_id, details (JSON), ip_address, status'),
+    ('chat_messages', 'id, user_id, role (user/assistant), content, timestamp'),
 ], 'Tablo', 'Temel Sütunlar')
 
 doc.add_heading('Randevu Durum Akışı', level=2)
@@ -396,47 +427,27 @@ doc.add_paragraph(
     '(CORS, JSON body parser) kaydeder ve tüm rota modüllerini ilgili API yollarına bağlar.'
 )
 
-add_code_block('''const express = require('express');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const path = require('path');
+add_code_block('''const http = require('http');
+const express = require('express');
+const { initSocket } = require('./config/socket');
+const { setupBullBoard } = require('./config/bullBoard');
 
-// Rota içe aktarmaları
-const authRoutes = require('./routes/auth');
-const appointmentRoutes = require('./routes/appointments');
-const usersRoutes = require('./routes/users');
-const notificationsRoutes = require('./routes/notifications');
-const messagesRoutes = require('./routes/messages');
-const doctorsRoutes = require('./routes/doctors');
-const clinicsRoutes = require('./routes/clinics');
-const medicalRecordsRoutes = require('./routes/medical-records');
-const patientsRoutes = require('./routes/patients');
-const chatbotRoutes = require('./routes/chatbot');
-
-dotenv.config({ path: path.resolve(__dirname, '.env') });
 const app = express();
-const PORT = process.env.PORT || 5000;
+const httpServer = http.createServer(app);
 
-// Ara Yazılımlar
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Socket.io ve Kuyruk İzleme Paneli Başlatma
+initSocket(httpServer, valkeyClient);
+const bullBoardMiddleware = setupBullBoard();
 
-// API Rotaları
-app.use('/api/auth', authRoutes);
-app.use('/api/appointments', appointmentRoutes);
-app.use('/api/users', usersRoutes);
-app.use('/api/notifications', notificationsRoutes);
-app.use('/api/messages', messagesRoutes);
-app.use('/api/doctors', doctorsRoutes);
-app.use('/api/clinics', clinicsRoutes);
-app.use('/api/medical-records', medicalRecordsRoutes);
-app.use('/api/patients', patientsRoutes);
-app.use('/api/chatbot', chatbotRoutes);
+// Admin Kuyruk Paneli (Kimlik Doğrulamalı)
+app.use('/admin/queues', authenticateToken, (req, res, next) => {
+  if (req.user.role !== 'admin') return res.status(403).json({ error: 'Admin access required' });
+  next();
+}, bullBoardMiddleware);
 
-app.listen(PORT, () => {
-  console.log(`Sunucu ${PORT} portunda çalışıyor`);
-});''', "Şekil 5.1 - server/index.js: Express Sunucu Başlatma ve Rota Kaydı")
+const server = httpServer.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});''', "Şekil 5.1 - Sunucu Giriş Noktası: Hybrid HTTP ve WebSocket Yapısı")
 
 doc.add_paragraph(
     'Sunucu, her biri ayrı bir denetleyiciye eşlenmiş 10 RESTful API rota grubu sunar. '
@@ -730,6 +741,33 @@ const sendAppointmentConfirmationEmail = async (
   await transporter.sendMail(mailOptions);
 };''', "Şekil 5.6 - config/email.js: Nodemailer SMTP Kurulumu ve E-posta Şablonu Örneği")
 
+# 5.7 Sistem Gözlemlenebilirliği ve İzleme
+doc.add_heading('5.7 Sistem Gözlemlenebilirliği ve İzleme', level=2)
+doc.add_paragraph(
+    'Üretim düzeyinde bir uygulama olarak sistem, gelişmiş izleme ve hata ayıklama yetenekleri içerir.'
+)
+
+add_bullet('Her isteğe atanan ve tüm loglarda (API, İşçi, Veritabanı) paylaşılan benzersiz requestId.', 'RequestID Takibi: ')
+add_bullet('Veritabanı ve Redis bağlantı durumunu kontrol eden /health uç noktası.', 'Sağlık Kontrolleri: ')
+add_bullet('Tüm API yanıtlarını standartlaştıran (res.success / res.error) yardımcı ara yazılımlar.', 'Yanıt Standardizasyonu: ')
+
+add_code_block('''// middleware/requestLogger.js
+const { v4: uuidv4 } = require('uuid');
+
+exports.assignRequestId = (req, res, next) => {
+  req.requestId = req.headers['x-request-id'] || uuidv4();
+  res.setHeader('x-request-id', req.requestId);
+  next();
+};''', "Şekil 5.7 - Dağıtık İzleme için RequestID Atama Ara Yazılımı")
+
+# 5.8 Zarif Kapatma (Graceful Shutdown)
+doc.add_heading('5.8 Zarif Kapatma (Graceful Shutdown)', level=2)
+doc.add_paragraph(
+    'Sistem, beklenmedik çökmeleri ve veri kayıplarını önlemek için zarif kapatma mekanizmasına sahiptir. '
+    'Sunucu bir kapatma sinyali (SIGTERM/SIGINT) aldığında, yeni istekleri kabul etmeyi durdurur, '
+    'devam eden işlemleri tamamlar ve ardından veritabanı ile Redis bağlantılarını güvenle kapatır.'
+)
+
 doc.add_page_break()
 
 # ====== 6. ÖN UÇ GERÇEKLEŞTİRİMİ ======
@@ -852,6 +890,29 @@ export const appointmentService = {
 export const chatbotService = {
   sendMessage: (message) => api.post('/chatbot/message', { message }),
 };''', "Şekil 6.2 - client/src/services/api.js: Axios Interceptor'lar ve Alan Servisleri")
+
+# 6.3 Gerçek Zamanlı İletişim (WebSocket)
+doc.add_heading('6.3 Gerçek Zamanlı İletişim (WebSocket)', level=2)
+doc.add_paragraph(
+    'Asenkron chatbot yanıtlarını ve anlık bildirimleri yönetmek için Socket.io istemcisi '
+    'kullanılmıştır. Uygulama açıldığında (veya giriş yapıldığında), istemci sunucu ile '
+    'güvenli bir WebSocket kanalı açar ve kendisine özel odaya (user:id) katılır.'
+)
+
+add_code_block('''// client/src/services/socketService.js
+import { io } from 'socket.io-client';
+
+export const connectSocket = () => {
+  const token = localStorage.getItem('token');
+  const socket = io(process.env.REACT_APP_SOCKET_URL, {
+    auth: { token }
+  });
+
+  socket.on('chatbot_response', (data) => {
+    // UI state'ini asenkron yanıtla güncelle
+    eventEmitter.emit('new_bot_message', data);
+  });
+};''', "Şekil 6.3 - Socket.io İstemci Yapılandırması ve Olay Dinleyici")
 
 doc.add_page_break()
 
@@ -985,68 +1046,48 @@ add_code_block('''const tools = [
 
 doc.add_page_break()
 
-doc.add_heading('Çok Adımlı Araç Zincirleme ile Mesaj İşleme Döngüsü', level=3)
+doc.add_heading('Asenkron İşleme ve Çok Adımlı Araç Zincirleme Mimarisi', level=2)
 doc.add_paragraph(
     'Chatbot\'un çekirdeği, LLM son bir metin yanıtı üretene kadar araç sonuçlarını '
     'LLM\'ye geri göndermeye devam eden bir while döngüsüdür. Bu, yapay zekânın tek bir '
     'kullanıcı isteği içinde birden fazla veritabanı işlemini otonom olarak zincirlemesini sağlar.'
 )
 
-add_code_block('''// Sohbet belleği için bellek içi oturum deposu
-const activeChats = {};
+add_code_block('''const { chatbotQueue } = require('../queues');
 
-exports.processMessage = async (req, res) => {
-  const userId = req.user.id;
-  const { message } = req.body;
+exports.processMessage = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    const { message } = req.body;
 
-  // Yeni kullanıcılar için konuşma geçmişini başlat
-  if (!activeChats[userId]) {
-    activeChats[userId] = [
-      { role: 'system', content: systemInstruction }
-    ];
-  }
-  
-  activeChats[userId].push({ role: 'user', content: message });
+    // 1. Mesajı veritabanına kaydet
+    await db.query(
+      'INSERT INTO chat_messages (user_id, role, content) VALUES (?, ?, ?)',
+      [String(userId), 'user', message]
+    );
 
-  let isMakingToolCalls = true;
-  let finalContent = "";
-
-  // İşleme döngüsü: birden fazla araç çağrısı turunu otomatik yönet
-  while (isMakingToolCalls) {
-    const response = await openai.chat.completions.create({
-      model: 'openai/gpt-oss-120b:free', 
-      messages: activeChats[userId],
-      tools: tools,
+    // 2. Arka plan işçisi için görevi kuyruğa ekle
+    const job = await chatbotQueue.add('process_message', {
+      userId: String(userId),
+      requestId: req.requestId
     });
 
-    const responseMessage = response.choices[0].message;
-    activeChats[userId].push(responseMessage);
-
-    if (responseMessage.tool_calls && responseMessage.tool_calls.length > 0) {
-      // Her aracı yürüt ve sonuçları LLM'ye geri besle
-      for (const call of responseMessage.tool_calls) {
-        const args = JSON.parse(call.function.arguments);
-        const toolResult = await executeTool(
-          call.function.name, args, userId
-        );
-        
-        activeChats[userId].push({
-          tool_call_id: call.id,
-          role: 'tool',
-          name: call.function.name,
-          content: JSON.stringify(toolResult)
-        });
-      }
-      // Döngü devam eder - LLM araç sonuçlarını işleyecek
-    } else {
-      // Artık araç çağrısı yok - son metin yanıtı hazır
-      isMakingToolCalls = false;
-      finalContent = responseMessage.content;
-    }
+    // 3. Hemen 202 Accepted yanıtı dön (Bloklamayan Mimari)
+    res.status(202).json({
+      success: true,
+      jobId: job.id,
+      message: 'Processing started'
+    });
+  } catch (error) {
+    next(error);
   }
-  
-  return res.json({ text: finalContent });
-};''', "Şekil 7.1c - chatbotController.js: Bellekli Çok Adımlı Araç Çağırma Döngüsü")
+};''', "Şekil 7.1c - chatbotController.js: Mesaj Kuyruklama ve Asenkron Yanıt")
+doc.add_paragraph(
+    'Asıl yapay zekâ işleme mantığı, chatbotWorker.js içerisinde gerçekleşir. '
+    'İşçi, mesaj geçmişini veritabanından çeker, LLM ile iletişim kurar, '
+    'gerekli araçları (fonksiyonları) çağırır ve sonucu tekrar veritabanına kaydederek '
+    'WebSocket üzerinden kullanıcıya bildirir.'
+)
 
 doc.add_page_break()
 
@@ -1246,8 +1287,70 @@ add_key_value_table([
 
 doc.add_page_break()
 
-# ====== 8. GÜVENLİK ÖZELLİKLERİ ======
-doc.add_heading('8. Güvenlik Özellikleri', level=1)
+# ====== 8. ASENKRON İŞLEM MİMARİSİ ======
+doc.add_heading('8. Asenkron İşlem Mimarisi', level=1)
+
+doc.add_paragraph(
+    'Sistem, ölçeklenebilirlik ve güvenilirlik için asenkron bir işlem mimarisine geçirilmiştir. '
+    'Ağır işlemler (Yapay Zekâ işleme ve E-posta gönderimi) ana HTTP döngüsünden çıkarılarak '
+    'arka plan kuyruklarına aktarılmıştır. Bu, kullanıcı arayüzünün takılmadan çalışmasını sağlar.'
+)
+
+doc.add_heading('8.1 BullMQ Kuyruk Sistemi', level=2)
+doc.add_paragraph(
+    'Mesaj kuyruğu yönetimi için BullMQ kütüphanesi kullanılmıştır. Veri saklama katmanı olarak '
+    'Valkey (Redis uyumlu) kullanılarak işlerin kalıcılığı ve süreçler arası iletişim sağlanır.'
+)
+
+add_key_value_table([
+    ('chatbot-queue', 'LLM API isteklerini ve araç çağırma işlemlerini yönetir.'),
+    ('email-queue', 'Nodemailer üzerinden giden tüm bildirimleri sıraya alır.'),
+], 'Kuyruk Adı', 'Sorumluluk')
+
+doc.add_heading('8.2 Arka Plan İşçileri (Workers)', level=2)
+doc.add_paragraph(
+    'İşçiler, ana sunucu sürecinden bağımsız olarak çalışan ve kuyruğa gelen görevleri tüketen '
+    'birimlerdir. Her işçi, başarısız olan görevleri 3 kez otomatik olarak yeniden deneme (retry) '
+    've hata durumlarını loglama mekanizmasına sahiptir.'
+)
+
+doc.add_page_break()
+
+# ====== 9. GERÇEK ZAMANLI WEBSOCKET BİLDİRİMLERİ ======
+doc.add_heading('9. Gerçek Zamanlı WebSocket Bildirimleri', level=1)
+
+doc.add_paragraph(
+    'Geleneksel HTTP istek-yanıt döngüsünün ötesinde, sistem Socket.io kullanarak tam çift yönlü '
+    '(full-duplex) iletişim kurar. Bu, özellikle asenkron chatbot yanıtlarının istemciye '
+    'anlık olarak iletilmesini sağlar.'
+)
+
+add_bullet('JWT tabanlı güvenli soket bağlantısı.', 'Güvenlik: ')
+add_bullet('Redis Adapter ile dağıtık sistem desteği (İşçiden-Sokete iletim).', 'Mimari: ')
+add_bullet('Her kullanıcı için özel oda (user:id) yönetimi.', 'İzolasyon: ')
+
+doc.add_page_break()
+
+# ====== 10. YAPISAL LOGLAMA VE DENETİM SİSTEMİ ======
+doc.add_heading('10. Yapısal Loglama ve Denetim Sistemi', level=1)
+
+doc.add_heading('10.1 Winston Yapısal Loglama', level=2)
+doc.add_paragraph(
+    'Sistemdeki her olay, Winston kütüphanesi kullanılarak yapısal JSON formatında loglanır. '
+    'Her isteğe atanan benzersiz bir "requestId" sayesinde, bir işlemin izi tüm katmanlarda '
+    '(API -> Kuyruk -> İşçi) sürülebilir.'
+)
+
+doc.add_heading('10.2 Denetim Günlüğü (Audit Log)', level=2)
+doc.add_paragraph(
+    'Sağlık verilerinin güvenliği için kritik işlemler (giriş, randevu oluşturma, durum değişikliği) '
+    '"audit_logs" tablosuna kaydedilir. Bu kayıtlar IP adresi, kullanıcı ID ve işlem detaylarını içerir.'
+)
+
+doc.add_page_break()
+
+# ====== 11. HIZ SINIRLAMA VE GÜVENLİK ÖZELLİKLERİ ======
+doc.add_heading('11. Hız Sınırlama ve Güvenlik', level=1)
 
 security_items = [
     ('JWT Kimlik Doğrulama: ', 'Tüm API uç noktaları (giriş/kayıt hariç) Authorization başlığında geçerli bir JWT tokenı gerektirir. Tokenlar 24 saat sonra süreleri dolar.'),
@@ -1263,10 +1366,35 @@ security_items = [
 for prefix, text in security_items:
     add_bullet(text, prefix)
 
+doc.add_heading('Hız Sınırlama (Rate Limiting)', level=2)
+doc.add_paragraph(
+    'Sistem, kaba kuvvet (brute-force) ve hizmet engelleme (DoS) saldırılarına karşı '
+    'Redis tabanlı hız sınırlama uygular. `express-rate-limit` ve `rate-limit-redis` '
+    'kullanılarak, kullanıcı IP\'leri bazında istek limitleri belirlenmiştir.'
+)
+
+add_key_value_table([
+    ('Giriş API\'si', 'IP başına 15 dakikada 5 deneme (Brute-force koruması)'),
+    ('Chatbot API\'si', 'IP başına 15 dakikada 20 mesaj (Maliyet ve DoS kontrolü)'),
+    ('Genel API', 'IP başına 1 dakikada 100 istek'),
+], 'Uç Nokta Grubu', 'Sınırlama Politikası')
+
 doc.add_page_break()
 
-# ====== 9. API UÇ NOKTALARI REFERANSI ======
-doc.add_heading('9. API Uç Noktaları Referansı', level=1)
+# ====== 12. DAĞITIK SİSTEM DAVRANIŞI ======
+doc.add_heading('12. Dağıtık Sistem Davranışı', level=1)
+
+doc.add_paragraph(
+    'Uygulama, modern bulut ortamlarına (Docker, Render, Kubernetes) hazır bir dağıtık mimariyi '
+    'takip eder. Arka uç sunucusu (API) ve işçiler (Workers) farklı fiziksel makinelerde '
+    'çalışsalar bile Redis üzerinden senkronize olurlar. Bu yapı, sistemin "Single Point of Failure" '
+    '(Tek Noktadan Arıza) riskini azaltır ve yatay ölçeklendirmeye (horizontal scaling) olanak tanır.'
+)
+
+doc.add_page_break()
+
+# ====== 13. API UÇ NOKTALARI REFERANSI ======
+doc.add_heading('13. API Uç Noktaları Referansı', level=1)
 
 doc.add_heading('Kimlik Doğrulama', level=2)
 add_key_value_table([
@@ -1308,8 +1436,8 @@ add_key_value_table([
 
 doc.add_page_break()
 
-# ====== 10. SONUÇ ======
-doc.add_heading('10. Sonuç', level=1)
+# ====== 14. SONUÇ ======
+doc.add_heading('14. Sonuç', level=1)
 
 doc.add_paragraph(
     'Online Hastane Yönetim Sistemi (CarePlus), sağlık bilgi sistemlerine kapsamlı, üretim düzeyinde '

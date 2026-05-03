@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 // Load environment variables with explicit path before anything else
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
+const http = require('http');
 const express = require('express');
 const cors = require('cors');
 const authRoutes = require('./routes/auth');
@@ -21,12 +22,19 @@ const logger = require('./config/logger');
 const { assignRequestId, requestLogger } = require('./middleware/requestLogger');
 const errorHandler = require('./middleware/errorHandler');
 const responseHelpers = require('./middleware/responseHelpers');
+const { authenticateToken } = require('./middleware/auth');
 const db = require('./config/db');
 const valkeyClient = require('./config/valkey');
+const { initSocket } = require('./config/socket');
+const { setupBullBoard } = require('./config/bullBoard');
 
 // Initialize express app
 const app = express();
+const httpServer = http.createServer(app);
 const PORT = process.env.PORT;
+
+// Initialize Socket.io with Redis adapter
+initSocket(httpServer, valkeyClient);
 
 // Debug environment variables
 logger.info('Environment variables loaded:', {
@@ -88,6 +96,18 @@ app.use('/api/medical-records', medicalRecordsRoutes);
 app.use('/api/patients', patientsRoutes);
 app.use('/api/chatbot', chatbotRoutes);
 
+// Bull-Board Dashboard — admin-only access with backend auth
+const bullBoardMiddleware = setupBullBoard();
+if (bullBoardMiddleware) {
+  app.use('/admin/queues', authenticateToken, (req, res, next) => {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ success: false, error: 'Admin access required' });
+    }
+    next();
+  }, bullBoardMiddleware);
+  logger.info('Bull-Board dashboard mounted at /admin/queues');
+}
+
 // Root route
 app.get('/', (req, res) => {
   res.send('Hospital Management System API');
@@ -97,28 +117,69 @@ app.get('/', (req, res) => {
 app.use(errorHandler);
 
 // Initialize background workers
-require('./workers/emailWorker');
-require('./workers/chatbotWorker');
+const emailWorker = require('./workers/emailWorker');
+const chatbotWorker = require('./workers/chatbotWorker');
 
 // Start the server
-const server = app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
   logger.info(`Server running on port ${PORT}`);
 });
 
 // Handle uncaught exceptions and unhandled rejections
-const shutdown = (err, type) => {
-  logger.error(`${type} occurred`, { stack: err ? err.stack : undefined, details: err ? (err.message || err) : undefined });
-  if (server) {
-    server.close(() => {
-      logger.info('Server closed');
-      process.exit(1);
-    });
+const shutdown = async (err, type) => {
+  if (err) {
+    logger.error(`${type} occurred`, { stack: err.stack, details: err.message });
   } else {
+    logger.info(`Graceful shutdown initiated: ${type}`);
+  }
+
+  // Set a timeout for forced exit
+  const forceExit = setTimeout(() => {
+    logger.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 10000);
+
+  try {
+    // 1. Close Server (Stop accepting new requests)
+    if (server) {
+      await new Promise(resolve => server.close(resolve));
+      logger.info('HTTP server closed');
+    }
+
+    // 2. Close BullMQ Workers
+    if (emailWorker) {
+      await emailWorker.close();
+      logger.info('Email worker closed');
+    }
+    if (chatbotWorker) {
+      await chatbotWorker.close();
+      logger.info('Chatbot worker closed');
+    }
+
+    // 3. Close Valkey Client
+    if (valkeyClient) {
+      await valkeyClient.quit();
+      logger.info('Valkey connection closed');
+    }
+
+    // 4. Close Database Pool
+    if (db && db.end) {
+      await db.end();
+      logger.info('Database pool closed');
+    }
+
+    clearTimeout(forceExit);
+    logger.info('All services shut down gracefully');
+    process.exit(err ? 1 : 0);
+  } catch (shutdownErr) {
+    logger.error('Error during graceful shutdown', { error: shutdownErr.message });
     process.exit(1);
   }
 };
 
 process.on('uncaughtException', (err) => shutdown(err, 'Uncaught Exception'));
 process.on('unhandledRejection', (reason) => shutdown(reason, 'Unhandled Rejection'));
+process.on('SIGTERM', () => shutdown(null, 'SIGTERM'));
+process.on('SIGINT', () => shutdown(null, 'SIGINT'));
 
 module.exports = app; 
